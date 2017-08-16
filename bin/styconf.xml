@@ -1,0 +1,93 @@
+<Style>
+	<!--StyleConstants样式属性集对象设置方法
+		static void setAlignment(MutableAttributeSet a, int align) 
+			Sets alignment. 
+		static void setBackground(MutableAttributeSet a, Color fg) 
+			Sets the background color. 
+		static void setBidiLevel(MutableAttributeSet a, int o) 
+			Sets the BidiLevel. 
+		static void setBold(MutableAttributeSet a, boolean b) 
+			Sets the bold attribute. 
+		static void setComponent(MutableAttributeSet a, Component c) 
+			Sets the component attribute. 
+		static void setFirstLineIndent(MutableAttributeSet a, float i) 
+			Sets the first line indent. 
+		static void setFontFamily(MutableAttributeSet a, String fam) 
+			Sets the font attribute. 
+		static void setFontSize(MutableAttributeSet a, int s) 
+			Sets the font size attribute. 
+		static void setForeground(MutableAttributeSet a, Color fg) 
+			Sets the foreground color. 
+		static void setIcon(MutableAttributeSet a, Icon c) 
+			Sets the icon attribute. 
+		static void setItalic(MutableAttributeSet a, boolean b) 
+			Sets the italic attribute. 
+		static void setLeftIndent(MutableAttributeSet a, float i) 
+			Sets left indent. 
+		static void setLineSpacing(MutableAttributeSet a, float i) 
+			Sets line spacing. 
+		static void setRightIndent(MutableAttributeSet a, float i) 
+			Sets right indent. 
+		static void setSpaceAbove(MutableAttributeSet a, float i) 
+			Sets space above. 
+		static void setSpaceBelow(MutableAttributeSet a, float i) 
+			Sets space below. 
+		static void setStrikeThrough(MutableAttributeSet a, boolean b) 
+			Sets the strikethrough attribute. 
+		static void setSubscript(MutableAttributeSet a, boolean b) 
+			Sets the subscript attribute. 
+		static void setSuperscript(MutableAttributeSet a, boolean b) 
+			Sets the superscript attribute. 
+		static void setTabSet(MutableAttributeSet a, TabSet tabs) 
+			Sets the TabSet. 
+		static void setUnderline(MutableAttributeSet a, boolean b) 
+			Sets the underline attribute. 
+ 	-->
+ 	<!--对应属性名
+ 		Alignment=(int align) 
+			Sets alignment. 
+		Background=(Color fg) 
+			Sets the background color. 
+		BidiLevel=(int o) 
+			Sets the BidiLevel. 
+		Bold=(boolean b) 
+			Sets the bold attribute. 
+		Component=(Component c) 
+			Sets the component attribute. 
+		FirstLineIndent=(float i) 
+			Sets the first line indent. 
+		FontFamily=(String fam) 
+			Sets the font attribute. 
+		FontSize=(int s) 
+			Sets the font size attribute. 
+		Foreground=(Color fg) 
+			Sets the foreground color. 
+		Icon=(Icon c) 
+			Sets the icon attribute. 
+		Italic=(boolean b) 
+			Sets the italic attribute. 
+		LeftIndent=(float i) 
+			Sets left indent. 
+		LineSpacing=(float i) 
+			Sets line spacing. 
+		RightIndent=(float i) 
+			Sets right indent. 
+		SpaceAbove=(float i) 
+			Sets space above. 
+		SpaceBelow=(float i) 
+			Sets space below. 
+		StrikeThrough=(boolean b) 
+			Sets the strikethrough attribute. 
+		Subscript=(boolean b) 
+			Sets the subscript attribute. 
+		Superscript=(boolean b) 
+			Sets the superscript attribute. 
+		TabSet=(TabSet tabs) 
+			Sets the TabSet. 
+		Underline=(boolean b) 
+			Sets the underline attribute. 
+ 	-->
+	<TextStyle name="defattr" FontSize="12" Foreground="black" FontFamily="微软雅黑"/>
+	<TextStyle name="attr1" FontSize="20" Foreground="red" FontFamily="微软雅黑"/>
+	<TextStyle name="attr2" FontSize="10" Foreground="blue" FontFamily="微软雅黑" Background="green"/>
+</Style>
