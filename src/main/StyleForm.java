@@ -132,7 +132,7 @@ public class StyleForm extends JPanel {
 			attr.setForeground(StyleConstants.getForeground(styattr));
 			attr.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					defaultStyle=StyleInitor.getInitStyleList().get(attr.getText());
+					defaultStyle=StyleInitor.getInitStyleList().get(((JLabel)e.getSource()).getText());
 					stylePanel.removeAll();
 					setInputStyle(defaultStyle);
 					stylePanel.updateUI();

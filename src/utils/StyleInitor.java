@@ -3,12 +3,15 @@ package utils;
 import java.awt.Color;
 import java.awt.Component;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.TabSet;
@@ -18,6 +21,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import main.MainFrm;
 import main.StyleForm;
 
 /**
@@ -50,11 +54,41 @@ public class StyleInitor {
 	public static Map<String,SimpleAttributeSet> getInitStyleList() {
 		// 返回的样式列表
 		Map<String,SimpleAttributeSet> result = new HashMap<String,SimpleAttributeSet>();
+		File file=new File(MainFrm.uriString+"styconf.xml");
+		if (!file.exists()) {
+			try {
+				int o = JOptionPane.showConfirmDialog(MainFrm.getmFrm(), "配置文件不存在,是否创建?");
+				switch (o) {
+				case 0:
+					file.createNewFile();
+					FileOutputStream fOutputStream=new FileOutputStream(file);
+					String exam="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Style>\n"
+							+ "<!--StyleConstants样式属性集对象设置方法\n标签中对应属性名\nAlignment=(int align) \nSets alignment. \nBackground=(Color fg) \nSets the background color. \nBidiLevel=(int o) \nSets the BidiLevel. \nBold=(boolean b) \nSets the bold attribute. \nComponent=(Component c) \nSets the component attribute. \nFirstLineIndent=(float i) \nSets the first line indent. \nFontFamily=(String fam) \nSets the font attribute. \nFontSize=(int s) \nSets the font size attribute. \nForeground=(Color fg) \nSets the foreground color. \nIcon=(Icon c) \nSets the icon attribute. \nItalic=(boolean b) \nSets the italic attribute. \nLeftIndent=(float i) \nSets left indent. \nLineSpacing=(float i) \nSets line spacing. \nRightIndent=(float i) \nSets right indent. \nSpaceAbove=(float i) \nSets space above. \nSpaceBelow=(float i) \nSets space below. \nStrikeThrough=(boolean b) \nSets the strikethrough attribute. \nSubscript=(boolean b) \nSets the subscript attribute. \nSuperscript=(boolean b) \nSets the superscript attribute. \nTabSet=(TabSet tabs) \nSets the TabSet. \nUnderline=(boolean b) \nSets the underline attribute. \n-->\n"
+					+ "<!--样式范例-->\n"
+					+ "\t<TextStyle name=\"defattr\" FontSize=\"12\" Foreground=\"black\" FontFamily=\"微软雅黑\"/>\n"
+					+ "\t<TextStyle name=\"attr1\" FontSize=\"20\" Foreground=\"red\" FontFamily=\"微软雅黑\"/>\n"
+					+ "\t<TextStyle name=\"attr2\" FontSize=\"10\" Foreground=\"blue\" FontFamily=\"微软雅黑\" Background=\"green\"/>\n</Style>";
+					fOutputStream.write(exam.getBytes("utf-8"));
+					
+					break;
+				case 1:
+					
+					break;
+				case 2:
+					System.exit(0);
+					break;
+				}
+				
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(MainFrm.getmFrm(), "配置文件创建失败");
+			}
+		}
+		
 		try {
 			// 获取本地配置文件路径
-			String path = reader.getClass().getClassLoader().getResource("styconf.xml").getFile();
+			//String path = reader.getClass().getClassLoader().getResource("styconf.xml").getFile();
 			//System.out.println(new File(path));
-			Document doc = reader.read(new File(path));
+			Document doc = reader.read(file);
 			// 获取配置文件根元素
 			Element root = doc.getRootElement();
 			List<Element> elements = root.elements();
@@ -71,10 +105,11 @@ public class StyleInitor {
 			}
 
 		} catch (DocumentException e) {
-			System.err.println("配置文件解析失败");
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(MainFrm.getmFrm(), "配置文件解析失败");
 			return new HashMap<String,SimpleAttributeSet>();
 		}catch (NullPointerException e) {
-			System.err.println("配置文件找不到");
+			JOptionPane.showMessageDialog(MainFrm.getmFrm(), "配置文件找不到");
 			return new HashMap<String,SimpleAttributeSet>();
 		}
 		return result;
@@ -90,41 +125,113 @@ public class StyleInitor {
 	 */
 	public static SimpleAttributeSet initStyle(Element styleEle) {
 		// Sets alignment.
-		try{ align = Integer.parseInt(styleEle.attribute("Alignment").getValue());}catch(Exception e){align=null;}
+		try {
+			align = Integer.parseInt(styleEle.attribute("Alignment").getValue());
+		} catch (Exception e) {
+			align = null;
+		}
 		// Sets the background color.
-		try{ background = str2color(styleEle.attribute("Background").getValue());}catch(Exception e){background=Color.white;}
+		try {
+			background = str2color(styleEle.attribute("Background").getValue());
+		} catch (Exception e) {
+			background = Color.white;
+		}
 		// Sets the BidiLevel.
-		try{ bidiLevel = Integer.parseInt(styleEle.attribute("BidiLevel").getValue());}catch(Exception e){bidiLevel=null;}
+		try {
+			bidiLevel = Integer.parseInt(styleEle.attribute("BidiLevel").getValue());
+		} catch (Exception e) {
+			bidiLevel = null;
+		}
 		// Sets the bold attribute.
-		try{ bold = Boolean.parseBoolean(styleEle.attribute("Bold").getValue());}catch(Exception e){bold=null;}
+		try {
+			bold = Boolean.parseBoolean(styleEle.attribute("Bold").getValue());
+		} catch (Exception e) {
+			bold = null;
+		}
 		// Sets the first line indent.
-		try{ firstLineIndent = Float.parseFloat(styleEle.attribute("FirstLineIndent").getValue());}catch(Exception e){firstLineIndent=null;}
+		try {
+			firstLineIndent = Float.parseFloat(styleEle.attribute("FirstLineIndent").getValue());
+		} catch (Exception e) {
+			firstLineIndent = null;
+		}
 		// Sets the font attribute.
-		try{ fontFamily = styleEle.attribute("FontFamily").getValue();}catch(Exception e){fontFamily=null;}
+		try {
+			fontFamily = styleEle.attribute("FontFamily").getValue();
+		} catch (Exception e) {
+			fontFamily = null;
+		}
 		// Sets the font size attribute.
-		try{ fontSize = Integer.parseInt(styleEle.attribute("FontSize").getValue());}catch(Exception e){fontSize=null;}
+		try {
+			fontSize = Integer.parseInt(styleEle.attribute("FontSize").getValue());
+		} catch (Exception e) {
+			fontSize = null;
+		}
 		// Sets the foreground color.
-		try{ foreground = str2color(styleEle.attribute("Foreground").getValue());}catch(Exception e){foreground=null;}
+		try {
+			foreground = str2color(styleEle.attribute("Foreground").getValue());
+		} catch (Exception e) {
+			foreground = null;
+		}
 		// Sets the italic attribute.
-		try{ italic = Boolean.parseBoolean(styleEle.attribute("Italic").getValue());}catch(Exception e){italic=null;}
+		try {
+			italic = Boolean.parseBoolean(styleEle.attribute("Italic").getValue());
+		} catch (Exception e) {
+			italic = null;
+		}
 		// Sets left indent.
-		try{ leftIndent = Float.parseFloat(styleEle.attribute("LeftIndent").getValue());}catch(Exception e){leftIndent=null;}
+		try {
+			leftIndent = Float.parseFloat(styleEle.attribute("LeftIndent").getValue());
+		} catch (Exception e) {
+			leftIndent = null;
+		}
 		// Sets line spacing.
-		try{ lineSpacing = Float.parseFloat(styleEle.attribute("LineSpacing").getValue());}catch(Exception e){lineSpacing=null;}
+		try {
+			lineSpacing = Float.parseFloat(styleEle.attribute("LineSpacing").getValue());
+		} catch (Exception e) {
+			lineSpacing = null;
+		}
 		// Sets right indent.
-		try{ rightIndent = Float.parseFloat(styleEle.attribute("RightIndent").getValue());}catch(Exception e){rightIndent=null;}
+		try {
+			rightIndent = Float.parseFloat(styleEle.attribute("RightIndent").getValue());
+		} catch (Exception e) {
+			rightIndent = null;
+		}
 		// Sets space above.
-		try{ spaceAbove = Float.parseFloat(styleEle.attribute("SpaceAbove").getValue());}catch(Exception e){spaceAbove=null;}
+		try {
+			spaceAbove = Float.parseFloat(styleEle.attribute("SpaceAbove").getValue());
+		} catch (Exception e) {
+			spaceAbove = null;
+		}
 		// Sets space below.
-		try{ spaceBelow = Float.parseFloat(styleEle.attribute("SpaceBelow").getValue());}catch(Exception e){spaceBelow=null;}
+		try {
+			spaceBelow = Float.parseFloat(styleEle.attribute("SpaceBelow").getValue());
+		} catch (Exception e) {
+			spaceBelow = null;
+		}
 		// Sets the strikethrough attribute.
-		try{ strikeThrough = Boolean.parseBoolean(styleEle.attribute("StrikeThrough").getValue());}catch(Exception e){strikeThrough=null;}
+		try {
+			strikeThrough = Boolean.parseBoolean(styleEle.attribute("StrikeThrough").getValue());
+		} catch (Exception e) {
+			strikeThrough = null;
+		}
 		// Sets the subscript attribute.
-		try{ subscript = Boolean.parseBoolean(styleEle.attribute("Subscript").getValue());}catch(Exception e){subscript=null;}
+		try {
+			subscript = Boolean.parseBoolean(styleEle.attribute("Subscript").getValue());
+		} catch (Exception e) {
+			subscript = null;
+		}
 		// Sets the superscript attribute.
-		try{ superscript = Boolean.parseBoolean(styleEle.attribute("Superscript").getValue());}catch(Exception e){superscript=null;}
+		try {
+			superscript = Boolean.parseBoolean(styleEle.attribute("Superscript").getValue());
+		} catch (Exception e) {
+			superscript = null;
+		}
 		// Sets the underline attribute.
-		try{ underline = Boolean.parseBoolean(styleEle.attribute("Underline").getValue());}catch(Exception e){underline=null;}
+		try {
+			underline = Boolean.parseBoolean(styleEle.attribute("Underline").getValue());
+		} catch (Exception e) {
+			underline = null;
+		}
 
 		// Sets the TabSet.
 		// TabSet tabSet = styleEle.attribute("TabSet").getValue();
@@ -133,32 +240,67 @@ public class StyleInitor {
 		// Sets the icon attribute.
 		// Icon icon = styleEle.attribute("Icon").getValue();
 
-		
-		//将样式应用到属性集中
-		SimpleAttributeSet result=new SimpleAttributeSet();
+		// 将样式应用到属性集中
+		SimpleAttributeSet result = new SimpleAttributeSet();
 
-		if(align!=null){StyleConstants.setAlignment(result, align);}
-		if(background!=null){StyleConstants.setBackground(result, background);}
-		if(bidiLevel!=null){StyleConstants.setBidiLevel(result, bidiLevel);}
-		if(bold!=null){StyleConstants.setBold(result, bold);}
-		//StyleConstants.setComponent(result, c);
-		if(firstLineIndent!=null){StyleConstants.setFirstLineIndent(result, firstLineIndent);}
-		if(fontFamily!=null){StyleConstants.setFontFamily(result, fontFamily);}
-		if(fontSize!=null){StyleConstants.setFontSize(result, fontSize);}
-		if(foreground!=null){StyleConstants.setForeground(result, foreground);}
-		//StyleConstants.setIcon(result, c);
-		if(italic!=null){StyleConstants.setItalic(result, italic);}
-		if(leftIndent!=null){StyleConstants.setLeftIndent(result, leftIndent);}
-		if(lineSpacing!=null){StyleConstants.setLineSpacing(result, lineSpacing);}
-		if(rightIndent!=null){StyleConstants.setRightIndent(result, rightIndent);}
-		if(spaceAbove!=null){StyleConstants.setSpaceAbove(result, spaceAbove);}
-		if(spaceBelow!=null){StyleConstants.setSpaceBelow(result, spaceBelow);}
-		if(strikeThrough!=null){StyleConstants.setStrikeThrough(result, strikeThrough);}
-		if(subscript!=null){StyleConstants.setSubscript(result, subscript);}
-		if(superscript!=null){StyleConstants.setSuperscript(result, superscript);}
-		//StyleConstants.setTabSet(result, tabs);
-		if(underline!=null){StyleConstants.setUnderline(result, underline);}
-		
+		if (align != null) {
+			StyleConstants.setAlignment(result, align);
+		}
+		if (background != null) {
+			StyleConstants.setBackground(result, background);
+		}
+		if (bidiLevel != null) {
+			StyleConstants.setBidiLevel(result, bidiLevel);
+		}
+		if (bold != null) {
+			StyleConstants.setBold(result, bold);
+		}
+		// StyleConstants.setComponent(result, c);
+		if (firstLineIndent != null) {
+			StyleConstants.setFirstLineIndent(result, firstLineIndent);
+		}
+		if (fontFamily != null) {
+			StyleConstants.setFontFamily(result, fontFamily);
+		}
+		if (fontSize != null) {
+			StyleConstants.setFontSize(result, fontSize);
+		}
+		if (foreground != null) {
+			StyleConstants.setForeground(result, foreground);
+		}
+		// StyleConstants.setIcon(result, c);
+		if (italic != null) {
+			StyleConstants.setItalic(result, italic);
+		}
+		if (leftIndent != null) {
+			StyleConstants.setLeftIndent(result, leftIndent);
+		}
+		if (lineSpacing != null) {
+			StyleConstants.setLineSpacing(result, lineSpacing);
+		}
+		if (rightIndent != null) {
+			StyleConstants.setRightIndent(result, rightIndent);
+		}
+		if (spaceAbove != null) {
+			StyleConstants.setSpaceAbove(result, spaceAbove);
+		}
+		if (spaceBelow != null) {
+			StyleConstants.setSpaceBelow(result, spaceBelow);
+		}
+		if (strikeThrough != null) {
+			StyleConstants.setStrikeThrough(result, strikeThrough);
+		}
+		if (subscript != null) {
+			StyleConstants.setSubscript(result, subscript);
+		}
+		if (superscript != null) {
+			StyleConstants.setSuperscript(result, superscript);
+		}
+		// StyleConstants.setTabSet(result, tabs);
+		if (underline != null) {
+			StyleConstants.setUnderline(result, underline);
+		}
+
 		return result;
 
 	}

@@ -53,7 +53,7 @@ public class MainFrm extends JPanel {
 	private static JComboBox<String> jComboBox=new JComboBox<String>();
 	
 	//静态公开变量
-	public static String uriString=MainFrm.class.getClassLoader().getResource("").getPath();
+	public static String uriString=System.getProperty("user.dir").substring(0,System.getProperty("user.dir").indexOf("DebugNote"));
 	public static String fileTypeString;
 	public static boolean fullScrean=false;
 
