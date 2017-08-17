@@ -50,40 +50,142 @@ public class StyleInitor {
 	private static Boolean subscript;
 	private static Boolean superscript;
 	private static Boolean underline;
+	
+	private static File styconfFile=new File(MainFrm.uriString+"styconf.xml");
 
 	public static Map<String,SimpleAttributeSet> getInitStyleList() {
 		// 返回的样式列表
 		Map<String,SimpleAttributeSet> result = new HashMap<String,SimpleAttributeSet>();
-		File file=new File(MainFrm.uriString+"styconf.xml");
+		File file=styconfFile;
 		if (!file.exists()) {
 			try {
-				int o = JOptionPane.showConfirmDialog(MainFrm.getmFrm(), "配置文件不存在,是否创建?");
+				int o = JOptionPane.showConfirmDialog(MainFrm.getmFrm(), "配置文件不存在,是否创建?\n是:创建自带样式配置文件\n否:创建默认样式配置文件\n取消:退出程序");
+				FileOutputStream fOutputStream=null;
+				String exam="";
 				switch (o) {
 				case 0:
 					file.createNewFile();
-					FileOutputStream fOutputStream=new FileOutputStream(file);
-					String exam="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Style>\n"
-							+ "<!--StyleConstants样式属性集对象设置方法\n标签中对应属性名\nAlignment=(int align) \nSets alignment. \nBackground=(Color fg) \nSets the background color. \nBidiLevel=(int o) \nSets the BidiLevel. \nBold=(boolean b) \nSets the bold attribute. \nComponent=(Component c) \nSets the component attribute. \nFirstLineIndent=(float i) \nSets the first line indent. \nFontFamily=(String fam) \nSets the font attribute. \nFontSize=(int s) \nSets the font size attribute. \nForeground=(Color fg) \nSets the foreground color. \nIcon=(Icon c) \nSets the icon attribute. \nItalic=(boolean b) \nSets the italic attribute. \nLeftIndent=(float i) \nSets left indent. \nLineSpacing=(float i) \nSets line spacing. \nRightIndent=(float i) \nSets right indent. \nSpaceAbove=(float i) \nSets space above. \nSpaceBelow=(float i) \nSets space below. \nStrikeThrough=(boolean b) \nSets the strikethrough attribute. \nSubscript=(boolean b) \nSets the subscript attribute. \nSuperscript=(boolean b) \nSets the superscript attribute. \nTabSet=(TabSet tabs) \nSets the TabSet. \nUnderline=(boolean b) \nSets the underline attribute. \n-->\n"
+					fOutputStream=new FileOutputStream(file);
+					exam="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+							+ "<!--StyleConstants样式属性集对象设置方法\n"
+							+ "\t标签中对应属性名:\n"
+							+ "\t\tAlignment=(int align) \n"
+							+ "\t\t\tSets alignment. \n"
+							+ "\t\tBackground=(Color fg) \n"
+							+ "\t\t\tSets the background color. \n"
+							+ "\t\tBidiLevel=(int o) \n"
+							+ "\t\t\tSets the BidiLevel. \n"
+							+ "\t\tBold=(boolean b) \n"
+							+ "\t\t\tSets the bold attribute. \n"
+							+ "\t\tComponent=(Component c) \n"
+							+ "\t\t\tSets the component attribute. \n"
+							+ "\t\tFirstLineIndent=(float i) \n"
+							+ "\t\t\tSets the first line indent. \n"
+							+ "\t\tFontFamily=(String fam) \n"
+							+ "\t\t\tSets the font attribute. \n"
+							+ "\t\tFontSize=(int s) \n"
+							+ "\t\t\tSets the font size attribute. \n"
+							+ "\t\tForeground=(Color fg) \n"
+							+ "\t\t\tSets the foreground color. \n"
+							+ "\t\tIcon=(Icon c) \n"
+							+ "\t\t\tSets the icon attribute. \n"
+							+ "\t\tItalic=(boolean b) \n"
+							+ "\t\t\tSets the italic attribute. \n"
+							+ "\t\tLeftIndent=(float i) \n"
+							+ "\t\t\tSets left indent. \n"
+							+ "\t\tLineSpacing=(float i) \n"
+							+ "\t\t\tSets line spacing. \n"
+							+ "\t\tRightIndent=(float i) \n"
+							+ "\t\t\tSets right indent. \n"
+							+ "\t\tSpaceAbove=(float i) \n"
+							+ "\t\t\tSets space above. \n"
+							+ "\t\tSpaceBelow=(float i) \n"
+							+ "\t\t\tSets space below. \n"
+							+ "\t\tStrikeThrough=(boolean b) \n"
+							+ "\t\t\tSets the strikethrough attribute. \n"
+							+ "\t\tSubscript=(boolean b) \n"
+							+ "\t\t\tSets the subscript attribute. \n"
+							+ "\t\tSuperscript=(boolean b) \n"
+							+ "\t\t\tSets the superscript attribute. \n"
+							+ "\t\tTabSet=(TabSet tabs) \n"
+							+ "\t\t\tSets the TabSet. \n"
+							+ "\t\tUnderline=(boolean b) \n"
+							+ "\t\t\tSets the underline attribute. \n"
+							+ "-->\n"
 					+ "<!--样式范例-->\n"
+					+ "<Style>\n"
 					+ "\t<TextStyle name=\"defattr\" FontSize=\"12\" Foreground=\"black\" FontFamily=\"微软雅黑\"/>\n"
 					+ "\t<TextStyle name=\"attr1\" FontSize=\"20\" Foreground=\"red\" FontFamily=\"微软雅黑\"/>\n"
-					+ "\t<TextStyle name=\"attr2\" FontSize=\"10\" Foreground=\"blue\" FontFamily=\"微软雅黑\" Background=\"green\"/>\n</Style>";
+					+ "\t<TextStyle name=\"attr2\" FontSize=\"10\" Foreground=\"blue\" FontFamily=\"微软雅黑\" Background=\"green\"/>\n"
+					+ "</Style>";
 					fOutputStream.write(exam.getBytes("utf-8"));
-					
+					fOutputStream.close();
 					break;
 				case 1:
-					
+					file.createNewFile();
+					 fOutputStream=new FileOutputStream(file);
+					exam="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+							+ "<!--StyleConstants样式属性集对象设置方法\n"
+							+ "\t标签中对应属性名\n"
+							+ "\t\tAlignment=(int align) \n"
+							+ "\t\t\tSets alignment. \n"
+							+ "\t\tBackground=(Color fg) \n"
+							+ "\t\t\tSets the background color. \n"
+							+ "\t\tBidiLevel=(int o) \n"
+							+ "\t\t\tSets the BidiLevel. \n"
+							+ "\t\tBold=(boolean b) \n"
+							+ "\t\t\tSets the bold attribute. \n"
+							+ "\t\tComponent=(Component c) \n"
+							+ "\t\t\tSets the component attribute. \n"
+							+ "\t\tFirstLineIndent=(float i) \n"
+							+ "\t\t\tSets the first line indent. \n"
+							+ "\t\tFontFamily=(String fam) \n"
+							+ "\t\t\tSets the font attribute. \n"
+							+ "\t\tFontSize=(int s) \n"
+							+ "\t\t\tSets the font size attribute. \n"
+							+ "\t\tForeground=(Color fg) \n"
+							+ "\t\t\tSets the foreground color. \n"
+							+ "\t\tIcon=(Icon c) \n"
+							+ "\t\t\tSets the icon attribute. \n"
+							+ "\t\tItalic=(boolean b) \n"
+							+ "\t\t\tSets the italic attribute. \n"
+							+ "\t\tLeftIndent=(float i) \n"
+							+ "\t\t\tSets left indent. \n"
+							+ "\t\tLineSpacing=(float i) \n"
+							+ "\t\t\tSets line spacing. \n"
+							+ "\t\tRightIndent=(float i) \n"
+							+ "\t\t\tSets right indent. \n"
+							+ "\t\tSpaceAbove=(float i) \n"
+							+ "\t\t\tSets space above. \n"
+							+ "\t\tSpaceBelow=(float i) \n"
+							+ "\t\t\tSets space below. \n"
+							+ "\t\tStrikeThrough=(boolean b) \n"
+							+ "\t\t\tSets the strikethrough attribute. \n"
+							+ "\t\tSubscript=(boolean b) \n"
+							+ "\t\t\tSets the subscript attribute. \n"
+							+ "\t\tSuperscript=(boolean b) \n"
+							+ "\t\t\tSets the superscript attribute. \n"
+							+ "\t\tTabSet=(TabSet tabs) \n"
+							+ "\t\t\tSets the TabSet. \n"
+							+ "\t\tUnderline=(boolean b) \n"
+							+ "\t\t\tSets the underline attribute. \n"
+							+ "-->\n"
+					+ "<!--样式范例-->\n"
+					+ "<Style>\n"
+					+ "\t<TextStyle name=\"defattr\" FontSize=\"12\" Foreground=\"black\" FontFamily=\"微软雅黑\"/>\n"
+					+ "</Style>";
+					fOutputStream.write(exam.getBytes("utf-8"));
+					fOutputStream.close();
 					break;
 				case 2:
 					System.exit(0);
 					break;
 				}
-				
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(MainFrm.getmFrm(), "配置文件创建失败");
+				JOptionPane.showMessageDialog(MainFrm.getmFrm(), "样式配置文件创建失败");
 			}
 		}
-		
+		styconfFile=file;
 		try {
 			// 获取本地配置文件路径
 			//String path = reader.getClass().getClassLoader().getResource("styconf.xml").getFile();
@@ -105,7 +207,6 @@ public class StyleInitor {
 			}
 
 		} catch (DocumentException e) {
-			e.printStackTrace();
 			JOptionPane.showMessageDialog(MainFrm.getmFrm(), "配置文件解析失败");
 			return new HashMap<String,SimpleAttributeSet>();
 		}catch (NullPointerException e) {
@@ -375,4 +476,10 @@ public class StyleInitor {
 		return new Color(r, g, b);
 	}
 
+	public static File getStyconfFile() {
+		return styconfFile;
+	}
+
+	
+	
 }

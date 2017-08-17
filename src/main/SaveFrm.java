@@ -1,6 +1,8 @@
 package main;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -25,6 +27,7 @@ import utils.FileReader;
 public class SaveFrm extends JFrame {
 
 	private static SaveFrm mFrm = new SaveFrm();
+	private static FrmHead frmHead = new FrmHead(mFrm);
 	private JButton save = new JButton("保存");
 	private JButton cancel = new JButton("取消");
 	private JPanel btnPanel = new JPanel();
@@ -32,25 +35,12 @@ public class SaveFrm extends JFrame {
 	private JComboBox<String> saveType = new JComboBox<String>();
 	private JTextArea fileName = new JTextArea();
 
+	
+	
 	private SaveFrm() {
 		this.setUndecorated(true);
 		this.setBounds(MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3, MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3);
-		this.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (mFrm.isVisible()) {
-					mFrm.requestFocus();
-				}
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+		
 
 		// 初始化各种控件样式
 		save.setOpaque(true);
@@ -58,6 +48,14 @@ public class SaveFrm extends JFrame {
 		fileName.setRows(1);
 		fileName.setBounds(this.getWidth() / 20 * 3, this.getHeight() / 6 * 2, this.getWidth() / 20 * 14,
 				MainFrm.getjComboBox().getHeight());
+		fileName.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				if (mFrm.isVisible() && !fileName.isFocusOwner()) {
+					fileName.requestFocus();
+				}
+
+			}
+		});
 		saveType.setBounds(this.getWidth() / 20 * 6, this.getHeight() / 2, this.getWidth() / 20 * 8,
 				MainFrm.getjComboBox().getHeight());
 		saveType.addItem("*.txt");
@@ -104,19 +102,21 @@ public class SaveFrm extends JFrame {
 		this.setLayout(null);
 		btnPanel.setLayout(new GridLayout(1, 2));
 		saveInfoJPanel.setLayout(null);
-		saveInfoJPanel.setBounds(0, 0, this.getWidth(), this.getHeight() / 10 * 9);
+		saveInfoJPanel.setBounds(0, 30, this.getWidth(), this.getHeight() / 10 * 8);
 		saveInfoJPanel.add(fileName);
 		saveInfoJPanel.add(saveType);
-		btnPanel.setBounds(0, saveInfoJPanel.getHeight(), this.getWidth(), this.getHeight() / 10);
+		btnPanel.setBounds(0, saveInfoJPanel.getHeight()+30, this.getWidth(), this.getHeight() / 10);
 		btnPanel.add(save);
 		btnPanel.add(cancel);
 		this.add(saveInfoJPanel);
 		this.add(btnPanel);
+		
 	};
 
 	public static void showFrm() {
 
 		mFrm.setVisible(true);
+		frmHead.setBounds(0, 0, mFrm.getWidth(), 30);
 	}
 
 	public static void closeFrm() {

@@ -201,6 +201,17 @@ public class TextArea {
 				ObjectInputStream objIn = new ObjectInputStream(fis);
 				dtext = (DefaultStyledDocument) objIn.readObject();
 				break;
+				
+			default:
+				InputStreamReader defInput = new InputStreamReader(new FileInputStream(file), "utf-8");
+				char[] defReadC = new char[1];
+				while (defInput.read(defReadC) != -1) {
+					char c = defReadC[0];
+					String readString = new String(defReadC);
+					// 将流读入数据写入文档对象中
+					dtext.insertString(dtext.getLength(), readString, null);
+				}
+				break;
 			}
 
 			/*
