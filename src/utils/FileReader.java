@@ -23,6 +23,18 @@ public class FileReader {
 		}
 		return vFiles;
 	}
+	public static Vector<File> getFiles(File loc,String endName) throws FileNotFoundException{
+		File f=loc;
+		File[] fs=f.listFiles();
+		Vector<File> vFiles=new Vector<File>();
+		for (int i = 0; i < fs.length; i++) {
+			if (fs[i].isFile()&&fs[i].getName().endsWith(endName)) {
+				vFiles.addElement(fs[i]);
+				
+			}
+		}
+		return vFiles;
+	}
 	public static Vector<File> getFiles() throws FileNotFoundException{
 		File f=new File(path);
 		File[] fs=f.listFiles();

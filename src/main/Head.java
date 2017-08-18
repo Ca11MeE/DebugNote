@@ -147,4 +147,15 @@ public class Head extends JPanel {
 		});
 	}
 
+	public void setLblText(String title){
+		Head.title.setText(title);
+	}
+
+	public static JLabel getTitle() {
+		return title;
+	}
+
+
+	
+	
 }

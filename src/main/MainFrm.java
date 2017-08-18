@@ -5,24 +5,35 @@ import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.annotation.Target;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
@@ -30,12 +41,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileSystemView;
 
 import org.junit.Test;
 
 import com.sun.java.swing.plaf.windows.DesktopProperty;
 import com.sun.media.sound.SF2GlobalRegion;
 
+import javafx.scene.input.MouseButton;
 import scr.JavaScr;
 import utils.FileReader;
 
@@ -48,10 +61,19 @@ public class MainFrm extends JPanel {
 	// 静态私有变量
 	private static DefaultListModel<String> head = new DefaultListModel<String>();
 	private static JList<String> headList = null;
-	private static JScrollPane headPane = null;
+	private static JScrollPane leftPane = null;
 	private static TextArea text = new TextArea();
 	private static JComboBox<String> jComboBox = new JComboBox<String>();
-
+	private static Head headPane = new Head();
+	
+	/**
+	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 */
+	//即将放入MainMenu类中实行优化
+	private static JPopupMenu mainFrmMenu = new JPopupMenu("文件操作");
+	private static JMenuItem newItem = new JMenuItem("新建");
+	
+	
 	// 样式窗口
 	private static StyleForm sf;
 
@@ -69,7 +91,7 @@ public class MainFrm extends JPanel {
 	 */
 	static {
 		headList = new JList<String>(head);
-		headPane = new JScrollPane(headList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+		leftPane = new JScrollPane(headList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// headList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		try {
@@ -120,11 +142,12 @@ public class MainFrm extends JPanel {
 	public MainFrm() {
 		// 初始化下拉框元素
 		jComboBox.addItem("*.txt");
-		jComboBox.addItem("*.exe");
+		// jComboBox.addItem("*.exe");
 		jComboBox.addItem("*.html");
-		jComboBox.addItem("*.class");
-		jComboBox.addItem("*.css");
-		jComboBox.addItem("*.java");
+		jComboBox.addItem("*.xml");
+		// jComboBox.addItem("*.class");
+		// jComboBox.addItem("*.css");
+		// jComboBox.addItem("*.java");
 		jComboBox.addItem("*.dbn");
 
 		fileTypeString = (String) jComboBox.getSelectedItem();
@@ -152,7 +175,7 @@ public class MainFrm extends JPanel {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				String uri;
+				String uri = "";
 
 				if (headList.getSelectedValue() == null) {
 					return;
@@ -171,12 +194,72 @@ public class MainFrm extends JPanel {
 					FileReader.getData(new File(uri), text, fileTypeString);
 
 				}
+
+				MainFrm.getHeadPane().setLblText(uri);
 			}
 		});
 		this.setLayout(new BorderLayout());
 		this.add(jComboBox, BorderLayout.NORTH);
-		this.add(headPane, BorderLayout.CENTER);
+		this.add(leftPane, BorderLayout.CENTER);
 
+		/**
+		 * 2017-08-17 17:31 遗留任务 实现添加文件夹选择
+		 */
+		// JFileChooser jFC = new JFileChooser(){
+		//
+		// @Override
+		// public void approveSelection() {
+		// System.out.println(this.getSelectedFile());
+		// }
+		//
+		// };
+		// jFC.setControlButtonsAreShown(false);
+		// jFC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		// jFC.setFileSystemView(new FileSystemView() {
+		//
+		// @Override
+		// public File createNewFolder(File containingDir) throws IOException {
+		// // TODO Auto-generated method stub
+		// return null;
+		// }
+		// });
+		// this.add(jFC,BorderLayout.SOUTH);
+		
+		
+		
+		
+		
+
+		// 添加菜单栏
+		/**
+		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		 */
+		//即将放入MainMenu类中实行优化
+		newItem.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				/*
+				 * 此处写入弹出新建文件窗口
+				 */
+				mainFrmMenu.setVisible(false);
+				headPane.updateUI();
+			}
+			
+		});
+		
+		headList.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					mainFrmMenu.setLocation((int) e.getLocationOnScreen().getX(), (int) e.getLocationOnScreen().getY());
+					mainFrmMenu.add(newItem);
+					mainFrmMenu.setVisible(true);
+				}
+			}
+
+		});
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -191,9 +274,7 @@ public class MainFrm extends JPanel {
 		sf.setPreferredSize(new Dimension(WIDTH, HEIGHT / 20));
 		sf.setVisible(true);
 
-		Head headPane = new Head();
-
-		MainFrm.getHeadPane().setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
+		MainFrm.getLeftPane().setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
 
 		mFrm.add(headPane, BorderLayout.NORTH);
 		mFrm.add(sf, BorderLayout.SOUTH);
@@ -206,22 +287,22 @@ public class MainFrm extends JPanel {
 
 			@Override
 			public void componentShown(ComponentEvent e) {
-				MainFrm.getHeadPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 			}
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				MainFrm.getHeadPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 			}
 
 			@Override
 			public void componentMoved(ComponentEvent e) {
-				MainFrm.getHeadPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 			}
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
-				MainFrm.getHeadPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 			}
 		});
 
@@ -229,8 +310,8 @@ public class MainFrm extends JPanel {
 
 	}
 
-	public static JScrollPane getHeadPane() {
-		return headPane;
+	public static JScrollPane getLeftPane() {
+		return leftPane;
 	}
 
 	public static StyleForm getSf() {
@@ -241,6 +322,8 @@ public class MainFrm extends JPanel {
 		return text;
 	}
 
-	
-	
+	public static Head getHeadPane() {
+		return headPane;
+	}
+
 }

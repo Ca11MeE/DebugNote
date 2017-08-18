@@ -48,14 +48,14 @@ public class SaveFrm extends JFrame {
 		fileName.setRows(1);
 		fileName.setBounds(this.getWidth() / 20 * 3, this.getHeight() / 6 * 2, this.getWidth() / 20 * 14,
 				MainFrm.getjComboBox().getHeight());
-		fileName.addFocusListener(new FocusAdapter() {
-			public void focusLost(FocusEvent e) {
-				if (mFrm.isVisible() && !fileName.isFocusOwner()) {
-					fileName.requestFocus();
-				}
-
-			}
-		});
+//		fileName.addFocusListener(new FocusAdapter() {
+//			public void focusLost(FocusEvent e) {
+//				if (mFrm.isVisible() && !(fileName.isFocusOwner() || save.isFocusOwner() || cancel.isFocusOwner() || saveType.isFocusOwner())) {
+//					fileName.requestFocus();
+//				}
+//
+//			}
+//		});
 		saveType.setBounds(this.getWidth() / 20 * 6, this.getHeight() / 2, this.getWidth() / 20 * 8,
 				MainFrm.getjComboBox().getHeight());
 		saveType.addItem("*.txt");
@@ -70,10 +70,10 @@ public class SaveFrm extends JFrame {
 
 					switch (selectedItem) {
 					case "*.txt":
-						saveAsTXT();
+						saveAsTXT(MainFrm.uriString + fileName.getText() + saveType.getSelectedItem().toString().substring(1));
 						break;
 					case "*.dbn":
-						saveAsDBN();
+						saveAsDBN(MainFrm.uriString + fileName.getText() + saveType.getSelectedItem().toString().substring(1));
 						break;
 					}
 					try {
@@ -123,9 +123,37 @@ public class SaveFrm extends JFrame {
 		mFrm.setVisible(false);
 	}
 
+	/**
+	 * 无参txt格式保存
+	 * 默认项目目录同级路径
+	 */
 	public void saveAsTXT() {
 		try {
 			File fileData = new File(MainFrm.uriString + fileName.getText() + saveType.getSelectedItem().toString().substring(1));
+			if (!fileData.exists()) {
+				fileData.createNewFile();
+			}
+			FileOutputStream file = new FileOutputStream(fileData);
+			
+			// 用字节流写出,暂时不能保存样式
+			OutputStreamWriter save = new OutputStreamWriter(file);
+			save.write(TextArea.getJTP().getText());
+			save.flush();
+			save.close();
+		} catch (FileNotFoundException e) {
+			return;
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(mFrm, "文件保存出错!!!!!");
+		}
+	}
+	
+	/**
+	 * 有参txt格式保存
+	 * @param filePath	保存路径
+	 */
+	public void saveAsTXT(String filePath) {
+		try {
+			File fileData = new File(filePath);
 			if (!fileData.exists()) {
 				fileData.createNewFile();
 			}
@@ -143,9 +171,36 @@ public class SaveFrm extends JFrame {
 		}
 	}
 
+	/**
+	 * 无参dbn格式保存
+	 * 默认项目目录同级路径
+	 */
 	public void saveAsDBN() {
 		try {
 			File fileData = new File(MainFrm.uriString + fileName.getText() + saveType.getSelectedItem().toString().substring(1));
+			if (!fileData.exists()) {
+				fileData.createNewFile();
+			}
+			FileOutputStream file = new FileOutputStream(fileData);
+			
+			ObjectOutputStream objOut = new ObjectOutputStream(file);
+			objOut.writeObject(TextArea.getJTP().getStyledDocument());
+			objOut.flush();
+			objOut.close();
+		} catch (FileNotFoundException e) {
+			return;
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(mFrm, "文件保存出错!!!!!");
+		}
+	}
+	
+	/**
+	 * 有参dbn格式保存
+	 * @param filePath	保存路径
+	 */
+	public void saveAsDBN(String filePath) {
+		try {
+			File fileData = new File(filePath);
 			if (!fileData.exists()) {
 				fileData.createNewFile();
 			}
@@ -161,4 +216,14 @@ public class SaveFrm extends JFrame {
 			JOptionPane.showMessageDialog(mFrm, "文件保存出错!!!!!");
 		}
 	}
+
+	public static SaveFrm getmFrm() {
+		return mFrm;
+	}
+
+	public JComboBox<String> getSaveType() {
+		return saveType;
+	}
+
+	
 }

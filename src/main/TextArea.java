@@ -150,7 +150,7 @@ public class TextArea {
 		try {
 
 			// 根据下拉框选择的文件后缀读取文件
-			switch (MainFrm.getjComboBox().getSelectedItem().toString().substring(1)) {
+			switch (file.getPath().substring(file.getPath().lastIndexOf('.'))) {
 
 			// txt后缀
 			case ".txt":
@@ -293,7 +293,26 @@ public class TextArea {
 //			System.out.println("保存失败");
 //		}
 		
-		SaveFrm.showFrm();
+		String filePath="";
+		/*
+		 * 判断是否打开已有文件
+		 * 是:保存时以原有文件名直接保存在文件路径
+		 * 否:打开保存窗口
+		 */
+		if (Head.getTitle().getText()!="" && Head.getTitle().getText()!=null) {
+			filePath=Head.getTitle().getText();
+			switch (SaveFrm.getmFrm().getSaveType().getSelectedItem().toString()) {
+			case "*.txt":
+				SaveFrm.getmFrm().saveAsTXT(filePath);
+				break;
+			case "*.dbn":
+				SaveFrm.getmFrm().saveAsDBN(filePath);
+				break;
+			}
+			
+		}else {
+			SaveFrm.showFrm();
+		}
 	}
 
 	public int getX() {

@@ -29,6 +29,7 @@ public class Opt4OpenStyXML extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				MainFrm.getText().read(StyleInitor.getStyconfFile());
+				MainFrm.getHeadPane().setLblText(StyleInitor.getStyconfFile().getPath());
 				hideFrm();
 			}
 			
