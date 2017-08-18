@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -22,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import javafx.scene.input.KeyCode;
 import utils.FileReader;
 
 public class SaveFrm extends JFrame {
@@ -48,6 +51,16 @@ public class SaveFrm extends JFrame {
 		fileName.setRows(1);
 		fileName.setBounds(this.getWidth() / 20 * 3, this.getHeight() / 6 * 2, this.getWidth() / 20 * 14,
 				MainFrm.getjComboBox().getHeight());
+		fileName.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					save.getMouseListeners()[0].mouseClicked(e);
+				}
+			}
+			
+		});
 //		fileName.addFocusListener(new FocusAdapter() {
 //			public void focusLost(FocusEvent e) {
 //				if (mFrm.isVisible() && !(fileName.isFocusOwner() || save.isFocusOwner() || cancel.isFocusOwner() || saveType.isFocusOwner())) {
