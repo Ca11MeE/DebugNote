@@ -2,6 +2,8 @@ package main;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -12,6 +14,9 @@ import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
+
+import frms.CreateFrm;
+import frms.SaveFrm;
 
 
 public class TextArea {
@@ -109,6 +114,15 @@ public class TextArea {
 
 		});
 
+		jtp.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				System.out.println(jtp.getSelectedText());
+				jtp.setCharacterAttributes(StyleForm.getDefaultStyle(), true);
+			}
+			
+		});
 	}
 
 	public void read(File file) {
@@ -329,6 +343,11 @@ public class TextArea {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public static void createNewFile() {
+
+		CreateFrm.getFrm().setVisible(true);
 	}
 
 }

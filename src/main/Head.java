@@ -22,12 +22,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout.Constraints;
+import javax.swing.SwingConstants;
 
+import com.sun.xml.internal.ws.org.objectweb.asm.Label;
+
+import frms.CreateFrm;
+import menu.file.MainMenu;
 import sun.net.www.content.text.plain;
 
 public class Head extends JPanel {
 	private static JButton closeButton = new JButton("关闭");
 	private static JButton saveButton = new JButton("保存");
+	private static JButton createButton = new JButton("新建");
 	private static JLabel title = new JLabel();
 	private Point point = new Point();
 	private Point mFrmLoc;
@@ -49,22 +55,30 @@ public class Head extends JPanel {
 		// 设置按钮样式
 		closeButton.setBackground(Color.GRAY);
 		saveButton.setBackground(Color.GRAY);
+		createButton.setBackground(Color.GRAY);
 		// 设置容器样式
 		// this.setBackground(Color.red);
 
 		title.setOpaque(true);
 		title.setBackground(Color.RED);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
 
-		c.weightx = 20;
+		c.weightx = 1;
+		gridBagLayout.setConstraints(createButton, c);
+		this.add(createButton);
+		c.weightx = 1;
+		gridBagLayout.setConstraints(saveButton, c);
+		this.add(saveButton);
+		c.weightx = 8000;
 		c.fill = GridBagConstraints.BOTH;
 		gridBagLayout.setConstraints(title, c);
 		this.add(title);
 		c.weightx = 1;
-		gridBagLayout.setConstraints(saveButton, c);
-		this.add(saveButton);
-		c.weightx = 1;
 		gridBagLayout.setConstraints(closeButton, c);
 		this.add(closeButton);
+		
+		//添加菜单
+		//this.add(MainMenu.getMainMenu());
 
 
 		// 添加鼠标拖动事件
@@ -143,6 +157,11 @@ public class Head extends JPanel {
 		closeButton.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				System.exit(0);
+			}
+		});
+		createButton.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				CreateFrm.getFrm().setVisible(true);
 			}
 		});
 	}

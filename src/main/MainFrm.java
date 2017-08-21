@@ -1,6 +1,9 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
@@ -9,16 +12,20 @@ import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.annotation.Target;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -27,6 +34,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -49,6 +57,7 @@ import com.sun.java.swing.plaf.windows.DesktopProperty;
 import com.sun.media.sound.SF2GlobalRegion;
 
 import javafx.scene.input.MouseButton;
+import menu.file.MainMenu;
 import scr.JavaScr;
 import utils.FileReader;
 
@@ -65,15 +74,16 @@ public class MainFrm extends JPanel {
 	private static TextArea text = new TextArea();
 	private static JComboBox<String> jComboBox = new JComboBox<String>();
 	private static Head headPane = new Head();
-	
+	private static JLabel hideJLabel = new JLabel("<");
+	private static JLabel showJLabel = new JLabel(">");
+
 	/**
 	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 */
-	//即将放入MainMenu类中实行优化
+	// 即将放入MainMenu类中实行优化
 	private static JPopupMenu mainFrmMenu = new JPopupMenu("文件操作");
-	private static JMenuItem newItem = new JMenuItem("新建");
-	
-	
+	private static JMenuItem createItem = new JMenuItem("新建");
+
 	// 样式窗口
 	private static StyleForm sf;
 
@@ -140,6 +150,12 @@ public class MainFrm extends JPanel {
 	 * 构造函数
 	 */
 	public MainFrm() {
+		// 初始化隐藏文件栏标签标签
+		hideJLabel.setBackground(Color.red);
+		hideJLabel.setOpaque(true);
+		// 初始化显示文件栏标签标签
+		showJLabel.setBackground(Color.red);
+		showJLabel.setOpaque(true);
 		// 初始化下拉框元素
 		jComboBox.addItem("*.txt");
 		// jComboBox.addItem("*.exe");
@@ -198,9 +214,51 @@ public class MainFrm extends JPanel {
 				MainFrm.getHeadPane().setLblText(uri);
 			}
 		});
+		
+		/**
+		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		 */
+		// 添加面板隐藏监听器
+		hideJLabel.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Component[] components = e.getComponent().getParent().getComponents();
+				for (Component component : components) {
+					if (component==hideJLabel) {
+						continue;
+					}
+					component.setVisible(false);
+				}
+				showJLabel.setVisible(true);
+				e.getComponent().getParent().add(showJLabel);
+				hideJLabel.setVisible(false);
+				e.getComponent().getParent().remove(hideJLabel);
+			}
+
+		});
+		//添加面板显示监听器
+		showJLabel.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Component[] components = e.getComponent().getParent().getComponents();
+				for (Component component : components) {
+					component.setVisible(true);
+				}
+				hideJLabel.setVisible(true);
+				e.getComponent().getParent().add(hideJLabel);
+				showJLabel.setVisible(false);
+				e.getComponent().getParent().remove(showJLabel);
+			}
+			
+		});
+
 		this.setLayout(new BorderLayout());
 		this.add(jComboBox, BorderLayout.NORTH);
 		this.add(leftPane, BorderLayout.CENTER);
+		this.add(showJLabel, BorderLayout.EAST);
+		this.add(hideJLabel, BorderLayout.EAST);
 
 		/**
 		 * 2017-08-17 17:31 遗留任务 实现添加文件夹选择
@@ -224,42 +282,40 @@ public class MainFrm extends JPanel {
 		// }
 		// });
 		// this.add(jFC,BorderLayout.SOUTH);
-		
-		
-		
-		
-		
 
 		// 添加菜单栏
 		/**
 		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		 */
-		//即将放入MainMenu类中实行优化
-		newItem.addMouseListener(new MouseAdapter() {
+		// 即将放入MainMenu类中实行优化
+		createItem.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				/*
 				 * 此处写入弹出新建文件窗口
 				 */
+				TextArea.createNewFile();
 				mainFrmMenu.setVisible(false);
 				headPane.updateUI();
 			}
-			
+
 		});
-		
 		headList.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					mainFrmMenu.setLocation((int) e.getLocationOnScreen().getX(), (int) e.getLocationOnScreen().getY());
-					mainFrmMenu.add(newItem);
+					mainFrmMenu.add(createItem);
 					mainFrmMenu.setVisible(true);
+				} else {
+					mainFrmMenu.setVisible(false);
 				}
 			}
 
 		});
+
 	}
 
 	public static void main(String[] args) throws Exception {

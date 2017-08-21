@@ -53,7 +53,6 @@ public class StyleForm extends JPanel {
 		initStyle();
 		stylePanel.setBounds(0, 0, MainFrm.getmFrm().getWidth() / 20 * 17, MainFrm.getmFrm().getHeight() / 20);
 		this.add(stylePanel);
-
 		this.updateUI();
 		inputStyle.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -126,6 +125,9 @@ public class StyleForm extends JPanel {
 		for (Entry<String, SimpleAttributeSet> entry : entrySet) {
 			String name = entry.getKey();
 			SimpleAttributeSet styattr = entry.getValue();
+			if ("defattr".equals(name.toLowerCase())) {
+				defaultStyle=styattr;
+			}
 			JLabel attr = new JLabel(name);
 			attr.setOpaque(true);
 			/*

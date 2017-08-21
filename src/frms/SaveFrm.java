@@ -1,5 +1,6 @@
-package main;
+package frms;
 
+import java.awt.AWTEventMulticaster;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
@@ -25,6 +26,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import javafx.scene.input.KeyCode;
+import main.FrmHead;
+import main.MainFrm;
+import main.TextArea;
 import utils.FileReader;
 
 public class SaveFrm extends JFrame {
@@ -42,7 +46,7 @@ public class SaveFrm extends JFrame {
 	
 	private SaveFrm() {
 		this.setUndecorated(true);
-		this.setBounds(MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3, MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3);
+		this.setBounds(MainFrm.getmFrm().getX()+MainFrm.WIDTH / 3, MainFrm.getmFrm().getY()+MainFrm.HEIGHT / 3, MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3);
 		
 
 		// 初始化各种控件样式
@@ -56,7 +60,7 @@ public class SaveFrm extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
-					save.getMouseListeners()[0].mouseClicked(e);
+					saveBtnClick();
 				}
 			}
 			
@@ -77,31 +81,7 @@ public class SaveFrm extends JFrame {
 		save.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String selectedItem = (String) saveType.getSelectedItem();
-				String text = fileName.getText();
-				if (text != ""  && text.matches("\\w*")) {
-
-					switch (selectedItem) {
-					case "*.txt":
-						saveAsTXT(MainFrm.uriString + fileName.getText() + saveType.getSelectedItem().toString().substring(1));
-						break;
-					case "*.dbn":
-						saveAsDBN(MainFrm.uriString + fileName.getText() + saveType.getSelectedItem().toString().substring(1));
-						break;
-					}
-					try {
-						MainFrm.getHead().clear();
-						Vector<File> vFiles = FileReader.getFiles(MainFrm.getjComboBox().getSelectedItem().toString().substring(1));
-						for (File exist : vFiles) {
-							MainFrm.getHead().add(MainFrm.getHead().getSize(), exist.getName());
-						}
-					} catch (FileNotFoundException e1) {
-						e1.printStackTrace();
-					}
-					closeFrm();
-				}else {
-					JOptionPane.showMessageDialog(mFrm, "文件名格式不正确的!!!!!");
-				}
+				saveBtnClick();
 				
 			}
 		});
@@ -127,7 +107,7 @@ public class SaveFrm extends JFrame {
 	};
 
 	public static void showFrm() {
-
+		mFrm.setBounds(MainFrm.getmFrm().getX()+MainFrm.WIDTH / 3, MainFrm.getmFrm().getY()+MainFrm.HEIGHT / 3, MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3);
 		mFrm.setVisible(true);
 		frmHead.setBounds(0, 0, mFrm.getWidth(), 30);
 	}
@@ -238,5 +218,31 @@ public class SaveFrm extends JFrame {
 		return saveType;
 	}
 
-	
+	public void saveBtnClick(){
+		String selectedItem = (String) saveType.getSelectedItem();
+		String text = fileName.getText();
+		if (text != ""  && text.matches("\\w*")) {
+
+			switch (selectedItem) {
+			case "*.txt":
+				saveAsTXT(MainFrm.uriString + fileName.getText() + saveType.getSelectedItem().toString().substring(1));
+				break;
+			case "*.dbn":
+				saveAsDBN(MainFrm.uriString + fileName.getText() + saveType.getSelectedItem().toString().substring(1));
+				break;
+			}
+			try {
+				MainFrm.getHead().clear();
+				Vector<File> vFiles = FileReader.getFiles(MainFrm.getjComboBox().getSelectedItem().toString().substring(1));
+				for (File exist : vFiles) {
+					MainFrm.getHead().add(MainFrm.getHead().getSize(), exist.getName());
+				}
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			closeFrm();
+		}else {
+			JOptionPane.showMessageDialog(mFrm, "文件名格式不正确的!!!!!");
+		}
+	}
 }
