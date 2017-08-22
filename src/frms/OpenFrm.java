@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import main.FrmHead;
 import main.MainFrm;
+import utils.ListSort;
 
 public class OpenFrm extends JFrame{
 	private static OpenFrm mFrm=new OpenFrm();
@@ -33,7 +34,11 @@ public class OpenFrm extends JFrame{
 			@Override
 			public void approveSelection() {
 				//打开文件
-				System.out.println(openDialog.getSelectedFile());
+				File file = openDialog.getSelectedFile();
+				String path = file.getPath();
+				ListSort.allPathAdd(path);
+				MainFrm.updateFullPathList();
+				MainFrm.updateHeadList();
 				mFrm.setVisible(false);
 			}
 			
@@ -43,7 +48,9 @@ public class OpenFrm extends JFrame{
 		openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 		//添加文件过滤器
 		openDialog.setAcceptAllFileFilterUsed(true);
-		openDialog.setFileFilter(txtFilter);
+		openDialog.addChoosableFileFilter(dbnFilter);
+		openDialog.addChoosableFileFilter(txtFilter);
+//		openDialog.setFileFilter(txtFilter);
 		openDialog.setFileFilter(dbnFilter);
 		openDialog.setVisible(true);
 		openDialog.setBounds(0,30,mFrm.getWidth(),mFrm.getHeight()-30);

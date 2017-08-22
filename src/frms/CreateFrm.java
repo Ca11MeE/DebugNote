@@ -76,7 +76,9 @@ public class CreateFrm extends JFrame{
 		createDialog.setDialogType(JFileChooser.SAVE_DIALOG);
 		//添加文件过滤器
 		createDialog.setAcceptAllFileFilterUsed(true);
-		createDialog.setFileFilter(txtFilter);
+		createDialog.addChoosableFileFilter(dbnFilter);
+		createDialog.addChoosableFileFilter(txtFilter);
+//		createDialog.setFileFilter(txtFilter);
 		createDialog.setFileFilter(dbnFilter);
 		createDialog.setVisible(true);
 		createDialog.setBounds(0,30,mFrm.getWidth(),mFrm.getHeight()-30);

@@ -57,10 +57,10 @@ import com.sun.java.swing.plaf.windows.DesktopProperty;
 import com.sun.media.sound.SF2GlobalRegion;
 
 import javafx.scene.input.MouseButton;
-import menu.file.LeftPaneMenu;
 import menu.file.MainMenu;
 import scr.JavaScr;
 import utils.FileReader;
+import utils.ListSort;
 
 public class MainFrm extends JPanel {
 
@@ -69,7 +69,8 @@ public class MainFrm extends JPanel {
 	public static final int HEIGHT = 800;
 
 	// 静态私有变量
-	//private static DefaultListModel<String> head = new DefaultListModel<String>();
+	// private static DefaultListModel<String> head = new
+	// DefaultListModel<String>();
 	private static JList<String> headList = null;
 	private static JList<String> fullPathList = null;
 	private static JScrollPane leftPane = null;
@@ -78,18 +79,6 @@ public class MainFrm extends JPanel {
 	private static Head headPane = new Head();
 	private static JLabel hideJLabel = new JLabel("<");
 	private static JLabel showJLabel = new JLabel(">");
-	
-	
-
-<<<<<<< HEAD
-	/**
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 */
-	// 即将放入MainMenu类中实行优化
-	private static JPopupMenu mainFrmMenu = LeftPaneMenu.getMenu();
-	private static JMenuItem createItem = new JMenuItem("新建");
-=======
->>>>>>> 1bcbb27daaac1ced5244e1a1e456b1df4c86aec8
 
 	// 样式窗口
 	private static StyleForm sf;
@@ -107,33 +96,25 @@ public class MainFrm extends JPanel {
 	 * 初始化文件列表和读取对应后缀文件并列出来
 	 */
 	static {
-<<<<<<< HEAD
-		if ("".equals(uriString) || uriString==null) {
-			uriString = "~/";
-		}
-		headList = new JList<String>(head);
-=======
-		//headList = new JList<String>(head);
-		headList = new JList<String>();
+		// headList = new JList<String>(head);
+		//下一行代码留待以后读取上次保存的已打开文件列表
 		fullPathList = new JList<String>();
->>>>>>> 1bcbb27daaac1ced5244e1a1e456b1df4c86aec8
+
+		headList = new JList<String>(ListSort.fileTypeFilter(fullPathList));
 		leftPane = new JScrollPane(headList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// headList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		//批量读取文件夹中文件并放入
-//		try {
-//			Vector<File> vFiles = FileReader.getFiles();
-//			for (File file : vFiles) {
-//				head.add(head.getSize(), file.getName());
-//			}
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-		
+		// 批量读取文件夹中文件并放入
+		// try {
+		// Vector<File> vFiles = FileReader.getFiles();
+		// for (File file : vFiles) {
+		// head.add(head.getSize(), file.getName());
+		// }
+		// } catch (FileNotFoundException e) {
+		// e.printStackTrace();
+		// }
 
 	}
-
-
 
 	/**
 	 * 获取文件后缀名下拉框对象
@@ -184,18 +165,19 @@ public class MainFrm extends JPanel {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				String endName = e.getItem().toString().substring(1);
-				fileTypeString = endName;
-				//批量读取文件夹中文件
-//				try {
-//					head.clear();
-//					Vector<File> vFiles = FileReader.getFiles(endName);
-//					for (File file : vFiles) {
-//						head.add(head.getSize(), file.getName());
-//					}
-//				} catch (FileNotFoundException ex) {
-//					ex.printStackTrace();
-//				}
+//				String endName = e.getItem().toString().substring(1);
+//				fileTypeString = endName;
+				updateHeadList();
+				// 批量读取文件夹中文件
+				// try {
+				// head.clear();
+				// Vector<File> vFiles = FileReader.getFiles(endName);
+				// for (File file : vFiles) {
+				// head.add(head.getSize(), file.getName());
+				// }
+				// } catch (FileNotFoundException ex) {
+				// ex.printStackTrace();
+				// }
 
 			}
 		});
@@ -227,7 +209,7 @@ public class MainFrm extends JPanel {
 				MainFrm.getHeadPane().setLblText(uri);
 			}
 		});
-		
+
 		/**
 		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		 */
@@ -238,18 +220,18 @@ public class MainFrm extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Component[] components = e.getComponent().getParent().getComponents();
 				for (Component component : components) {
-					
+
 					component.setVisible(false);
 				}
 				showJLabel.setVisible(true);
-				e.getComponent().getParent().add(showJLabel,BorderLayout.EAST);
+				e.getComponent().getParent().add(showJLabel, BorderLayout.EAST);
 				e.getComponent().getParent().remove(hideJLabel);
 			}
 
 		});
-		//添加面板显示监听器
+		// 添加面板显示监听器
 		showJLabel.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Component[] components = e.getComponent().getParent().getComponents();
@@ -257,10 +239,10 @@ public class MainFrm extends JPanel {
 					component.setVisible(true);
 				}
 				hideJLabel.setVisible(true);
-				e.getComponent().getParent().add(hideJLabel,BorderLayout.EAST);
+				e.getComponent().getParent().add(hideJLabel, BorderLayout.EAST);
 				e.getComponent().getParent().remove(showJLabel);
 			}
-			
+
 		});
 
 		this.setLayout(new BorderLayout());
@@ -298,8 +280,9 @@ public class MainFrm extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON3) {
-					menu.view.MainMenu.getMainFrmMenu().setLocation((int) e.getLocationOnScreen().getX(), (int) e.getLocationOnScreen().getY());
-					
+					menu.view.MainMenu.getMainFrmMenu().setLocation((int) e.getLocationOnScreen().getX(),
+							(int) e.getLocationOnScreen().getY());
+
 					menu.view.MainMenu.getMainFrmMenu().setVisible(true);
 				} else {
 					menu.view.MainMenu.getMainFrmMenu().setVisible(false);
@@ -373,4 +356,12 @@ public class MainFrm extends JPanel {
 		return headPane;
 	}
 
+	public static void updateFullPathList() {
+		fullPathList.setModel(ListSort.getHead());
+	}
+	
+	public static void updateHeadList() {
+		headList.setModel(ListSort.fileTypeFilter(fullPathList));
+		headList.updateUI();
+	}
 }
