@@ -9,7 +9,7 @@ import main.TextArea;
 
 
 public class FileReader {
-	private static String path=MainFrm.uriString;
+	private static String path=(MainFrm.uriString==null || "".equals(MainFrm.uriString))?"~/":MainFrm.uriString;
 	
 	public static Vector<File> getFiles(String endName) throws FileNotFoundException{
 		File f=new File(path);
@@ -39,11 +39,14 @@ public class FileReader {
 		File f=new File(path);
 		File[] fs=f.listFiles();
 		Vector<File> vFiles=new Vector<File>();
+		if (fs!=null) {
+			
 		for (int i = 0; i < fs.length; i++) {
 			if (fs[i].isFile()&&fs[i].getName().endsWith(".txt")) {
 				vFiles.addElement(fs[i]);
 				
 			}
+		}
 		}
 		return vFiles;
 	}

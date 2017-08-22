@@ -57,6 +57,7 @@ import com.sun.java.swing.plaf.windows.DesktopProperty;
 import com.sun.media.sound.SF2GlobalRegion;
 
 import javafx.scene.input.MouseButton;
+import menu.file.LeftPaneMenu;
 import menu.file.MainMenu;
 import scr.JavaScr;
 import utils.FileReader;
@@ -81,7 +82,7 @@ public class MainFrm extends JPanel {
 	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 */
 	// 即将放入MainMenu类中实行优化
-	private static JPopupMenu mainFrmMenu = new JPopupMenu("文件操作");
+	private static JPopupMenu mainFrmMenu = LeftPaneMenu.getMenu();
 	private static JMenuItem createItem = new JMenuItem("新建");
 
 	// 样式窗口
@@ -100,6 +101,9 @@ public class MainFrm extends JPanel {
 	 * 初始化文件列表和读取对应后缀文件并列出来
 	 */
 	static {
+		if ("".equals(uriString) || uriString==null) {
+			uriString = "~/";
+		}
 		headList = new JList<String>(head);
 		leftPane = new JScrollPane(headList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
