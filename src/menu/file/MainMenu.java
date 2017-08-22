@@ -30,7 +30,8 @@ public class MainMenu extends JMenu{
 	}
 	
 	public static MainMenu getMainMenu(){
-		return new MainMenu();
+		
+			return new MainMenu();
 	}
 	
 }

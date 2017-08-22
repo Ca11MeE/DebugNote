@@ -47,6 +47,8 @@ public class CreateFrm extends JFrame{
 						createFile.delete();
 						try {
 							createFile.createNewFile();
+							//文件列表框添加新建文件路径
+							//文本编辑框打开该文件
 						} catch (IOException e) {
 							JOptionPane.showMessageDialog(mFrm, "文件创建失败");
 						}
@@ -87,7 +89,6 @@ public class CreateFrm extends JFrame{
 	}
 	
 	private CreateFrm(){
-		
 	}
 	
 	public static CreateFrm getFrm() {

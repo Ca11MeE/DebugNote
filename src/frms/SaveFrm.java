@@ -231,15 +231,15 @@ public class SaveFrm extends JFrame {
 				saveAsDBN(MainFrm.uriString + fileName.getText() + saveType.getSelectedItem().toString().substring(1));
 				break;
 			}
-			try {
-				MainFrm.getHead().clear();
-				Vector<File> vFiles = FileReader.getFiles(MainFrm.getjComboBox().getSelectedItem().toString().substring(1));
-				for (File exist : vFiles) {
-					MainFrm.getHead().add(MainFrm.getHead().getSize(), exist.getName());
-				}
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			}
+//			try {
+//				MainFrm.getHead().clear();
+//				Vector<File> vFiles = FileReader.getFiles(MainFrm.getjComboBox().getSelectedItem().toString().substring(1));
+//				for (File exist : vFiles) {
+//					MainFrm.getHead().add(MainFrm.getHead().getSize(), exist.getName());
+//				}
+//			} catch (FileNotFoundException e1) {
+//				e1.printStackTrace();
+//			}
 			closeFrm();
 		}else {
 			JOptionPane.showMessageDialog(mFrm, "文件名格式不正确的!!!!!");

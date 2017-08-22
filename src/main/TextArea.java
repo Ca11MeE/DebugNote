@@ -116,11 +116,6 @@ public class TextArea {
 
 		jtp.addMouseListener(new MouseAdapter() {
 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				System.out.println(jtp.getSelectedText());
-				jtp.setCharacterAttributes(StyleForm.getDefaultStyle(), true);
-			}
 			
 		});
 	}
@@ -350,4 +345,8 @@ public class TextArea {
 		CreateFrm.getFrm().setVisible(true);
 	}
 
+	public static void changeSelectedStyle(){
+		//String selectedText = jtp.getSelectedText();
+		jtp.setCharacterAttributes(StyleForm.getDefaultStyle(), true);
+	}
 }

@@ -27,6 +27,7 @@ import javax.swing.SwingConstants;
 import com.sun.xml.internal.ws.org.objectweb.asm.Label;
 
 import frms.CreateFrm;
+import frms.OpenFrm;
 import menu.file.MainMenu;
 import sun.net.www.content.text.plain;
 
@@ -34,6 +35,7 @@ public class Head extends JPanel {
 	private static JButton closeButton = new JButton("关闭");
 	private static JButton saveButton = new JButton("保存");
 	private static JButton createButton = new JButton("新建");
+	private static JButton openButton = new JButton("打开");
 	private static JLabel title = new JLabel();
 	private Point point = new Point();
 	private Point mFrmLoc;
@@ -56,6 +58,7 @@ public class Head extends JPanel {
 		closeButton.setBackground(Color.GRAY);
 		saveButton.setBackground(Color.GRAY);
 		createButton.setBackground(Color.GRAY);
+		openButton.setBackground(Color.GRAY);
 		// 设置容器样式
 		// this.setBackground(Color.red);
 
@@ -66,6 +69,9 @@ public class Head extends JPanel {
 		c.weightx = 1;
 		gridBagLayout.setConstraints(createButton, c);
 		this.add(createButton);
+		c.weightx = 1;
+		gridBagLayout.setConstraints(saveButton, c);
+		this.add(openButton);
 		c.weightx = 1;
 		gridBagLayout.setConstraints(saveButton, c);
 		this.add(saveButton);
@@ -153,7 +159,6 @@ public class Head extends JPanel {
 			}
 
 		});
-		
 		closeButton.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				System.exit(0);
@@ -162,6 +167,11 @@ public class Head extends JPanel {
 		createButton.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				CreateFrm.getFrm().setVisible(true);
+			}
+		});
+		openButton.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				OpenFrm.getFrm().setVisible(true);
 			}
 		});
 	}
