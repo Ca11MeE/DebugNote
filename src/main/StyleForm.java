@@ -147,6 +147,7 @@ public class StyleForm extends JPanel {
 					stylePanel.updateUI();
 					styleListShow = false;
 					showBuffer(("字体大小:"+selectAttr.getAttribute("FontSize")).toCharArray(), selectAttr);
+					TextArea.changeSelectedStyle();
 				}
 			});
 			styles.add(attr);
