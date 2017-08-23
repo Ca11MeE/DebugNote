@@ -21,6 +21,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import app.DebugNote;
 import main.MainFrm;
 import main.StyleForm;
 
@@ -59,7 +60,7 @@ public class StyleInitor {
 		File file=styconfFile;
 		if (!file.exists()) {
 			try {
-				int o = JOptionPane.showConfirmDialog(MainFrm.getmFrm(), "配置文件不存在,是否创建?\n是:创建自带样式配置文件\n否:创建默认样式配置文件\n取消:退出程序");
+				int o = JOptionPane.showConfirmDialog(DebugNote.getmFrm(), "配置文件不存在,是否创建?\n是:创建自带样式配置文件\n否:创建默认样式配置文件\n取消:退出程序");
 				FileOutputStream fOutputStream=null;
 				String exam="";
 				switch (o) {
@@ -182,7 +183,7 @@ public class StyleInitor {
 					break;
 				}
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(MainFrm.getmFrm(), "样式配置文件创建失败");
+				JOptionPane.showMessageDialog(DebugNote.getmFrm(), "样式配置文件创建失败");
 			}
 		}
 		styconfFile=file;
@@ -207,10 +208,10 @@ public class StyleInitor {
 			}
 
 		} catch (DocumentException e) {
-			JOptionPane.showMessageDialog(MainFrm.getmFrm(), "配置文件解析失败");
+			JOptionPane.showMessageDialog(DebugNote.getmFrm(), "配置文件解析失败");
 			return new HashMap<String,SimpleAttributeSet>();
 		}catch (NullPointerException e) {
-			JOptionPane.showMessageDialog(MainFrm.getmFrm(), "配置文件找不到");
+			JOptionPane.showMessageDialog(DebugNote.getmFrm(), "配置文件找不到");
 			return new HashMap<String,SimpleAttributeSet>();
 		}
 		return result;

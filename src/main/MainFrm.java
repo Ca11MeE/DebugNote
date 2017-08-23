@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.MenuBar;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
@@ -45,6 +46,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
@@ -56,6 +58,7 @@ import org.junit.Test;
 import com.sun.java.swing.plaf.windows.DesktopProperty;
 import com.sun.media.sound.SF2GlobalRegion;
 
+import app.DebugNote;
 import javafx.scene.input.MouseButton;
 import menu.file.MainMenu;
 import scr.JavaScr;
@@ -64,9 +67,7 @@ import utils.ListSort;
 
 public class MainFrm extends JPanel {
 
-	// 常量
-	public static final int WIDTH = 1000;
-	public static final int HEIGHT = 800;
+	
 
 	// 静态私有变量
 	// private static DefaultListModel<String> head = new
@@ -74,30 +75,29 @@ public class MainFrm extends JPanel {
 	private static JList<String> headList = null;
 	private static JList<String> fullPathList = null;
 	private static JScrollPane leftPane = null;
-	private static TextArea text = new TextArea();
+	
 	private static JComboBox<String> jComboBox = new JComboBox<String>();
-	private static Head headPane = new Head();
+	
 	private static JLabel hideJLabel = new JLabel("<");
 	private static JLabel showJLabel = new JLabel(">");
+	
+	
 
-	// 样式窗口
-	private static StyleForm sf;
+	
 
 	// 静态公开变量
 	public static String uriString = System.getProperty("user.dir").substring(0,
 			System.getProperty("user.dir").lastIndexOf("\\") + 1);
-	public static String fileTypeString;
 	public static boolean fullScrean = false;
 
-	// 程序主界面
-	private static JFrame mFrm = new JFrame("DebugNote");
+	
 
 	/*
 	 * 初始化文件列表和读取对应后缀文件并列出来
 	 */
 	static {
 		// headList = new JList<String>(head);
-		//下一行代码留待以后读取上次保存的已打开文件列表
+		// 下一行代码留待以后读取上次保存的已打开文件列表
 		fullPathList = new JList<String>();
 
 		headList = new JList<String>(ListSort.fileTypeFilter(fullPathList));
@@ -125,18 +125,11 @@ public class MainFrm extends JPanel {
 		return jComboBox;
 	}
 
-	/**
-	 * 获取程序主窗口
-	 * 
-	 * @return 程序主窗口
-	 */
-	public static JFrame getmFrm() {
-		return mFrm;
-	}
+	
 
 	// 添加窗体移动方法
 	public static void frmMove(Point point) {
-		mFrm.setLocation(point);
+		DebugNote.getmFrm().setLocation(point);
 	}
 
 	/**
@@ -150,6 +143,7 @@ public class MainFrm extends JPanel {
 		showJLabel.setBackground(Color.red);
 		showJLabel.setOpaque(true);
 		// 初始化下拉框元素
+		jComboBox.addItem("*.*");
 		jComboBox.addItem("*.txt");
 		// jComboBox.addItem("*.exe");
 		jComboBox.addItem("*.html");
@@ -159,15 +153,14 @@ public class MainFrm extends JPanel {
 		// jComboBox.addItem("*.java");
 		jComboBox.addItem("*.dbn");
 
-		fileTypeString = (String) jComboBox.getSelectedItem();
 		// 添加下拉框选择监听器
 		jComboBox.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-//				String endName = e.getItem().toString().substring(1);
-//				fileTypeString = endName;
-				updateHeadList();
+				// String endName = e.getItem().toString().substring(1);
+				// fileTypeString = endName;
+					updateHeadList();
 				// 批量读取文件夹中文件
 				// try {
 				// head.clear();
@@ -186,33 +179,17 @@ public class MainFrm extends JPanel {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				String uri = "";
-
+				String uri = ListSort.findPathInPathList(headList.getSelectedValue());
+				if (uri == null) {
+					return;
+				}
 				if (headList.getSelectedValue() == null) {
 					return;
 				}
-
-				if (headList.getSelectedValue().endsWith(".txt")) {
-
-					uri = uriString + headList.getSelectedValue();
-					FileReader.getData(new File(uri), text);
-
-				}
-
-				if (headList.getSelectedValue().endsWith(fileTypeString)) {
-
-					uri = uriString + headList.getSelectedValue();
-					FileReader.getData(new File(uri), text, fileTypeString);
-
-				}
-
-				MainFrm.getHeadPane().setLblText(uri);
+				FileReader.getData(new File(uri), DebugNote.getText());
+				DebugNote.getHeadPane().setLblText(uri);
 			}
 		});
-
-		/**
-		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		 */
 		// 添加面板隐藏监听器
 		hideJLabel.addMouseListener(new MouseAdapter() {
 
@@ -290,78 +267,23 @@ public class MainFrm extends JPanel {
 			}
 
 		});
+		
 	}
 
-	public static void main(String[] args) throws Exception {
-
-		MainFrm mf = new MainFrm();
-		mFrm.setLayout(new BorderLayout());
-		mFrm.setSize(WIDTH, HEIGHT);
-		mFrm.setUndecorated(true);
-
-		sf = new StyleForm();
-		sf.setLocation(mFrm.getX(), mFrm.getY() + mFrm.getHeight());
-		sf.setPreferredSize(new Dimension(WIDTH, HEIGHT / 20));
-		sf.setVisible(true);
-
-		MainFrm.getLeftPane().setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
-
-		mFrm.add(headPane, BorderLayout.NORTH);
-		mFrm.add(sf, BorderLayout.SOUTH);
-		mFrm.add(mf, BorderLayout.WEST);
-		mFrm.add(text.getTextlist(), BorderLayout.CENTER);
-
-		// 初始化输入法
-
-		mFrm.addComponentListener(new ComponentListener() {
-
-			@Override
-			public void componentShown(ComponentEvent e) {
-				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
-			}
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
-			}
-		});
-
-		mFrm.setVisible(true);
-
-	}
+	
 
 	public static JScrollPane getLeftPane() {
 		return leftPane;
 	}
 
-	public static StyleForm getSf() {
-		return sf;
-	}
-
-	public static TextArea getText() {
-		return text;
-	}
-
-	public static Head getHeadPane() {
-		return headPane;
-	}
-
 	public static void updateFullPathList() {
 		fullPathList.setModel(ListSort.getHead());
 	}
-	
+
 	public static void updateHeadList() {
 		headList.setModel(ListSort.fileTypeFilter(fullPathList));
 		headList.updateUI();
 	}
+
+	
 }

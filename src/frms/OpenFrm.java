@@ -21,7 +21,7 @@ public class OpenFrm extends JFrame{
 	
 	static{
 		mFrm.setUndecorated(true);
-		mFrm.setBounds(MainFrm.getmFrm().getX()+MainFrm.WIDTH / 3, MainFrm.getmFrm().getY()+MainFrm.HEIGHT / 3, MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3);
+		mFrm.setBounds(CreateFrm.getFrmBound());
 		mFrm.setLayout(null);
 		
 		openDialog=new JFileChooser(){
@@ -36,9 +36,12 @@ public class OpenFrm extends JFrame{
 				//打开文件
 				File file = openDialog.getSelectedFile();
 				String path = file.getPath();
-				ListSort.allPathAdd(path);
-				MainFrm.updateFullPathList();
-				MainFrm.updateHeadList();
+				if (ListSort.findPathInPathList(file.getName())==null) {
+					ListSort.allPathAdd(path);
+					MainFrm.updateFullPathList();
+					MainFrm.updateHeadList();
+					
+				}
 				mFrm.setVisible(false);
 			}
 			
@@ -47,7 +50,7 @@ public class OpenFrm extends JFrame{
 		};
 		openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 		//添加文件过滤器
-		openDialog.setAcceptAllFileFilterUsed(true);
+		openDialog.setAcceptAllFileFilterUsed(false);
 		openDialog.addChoosableFileFilter(dbnFilter);
 		openDialog.addChoosableFileFilter(txtFilter);
 //		openDialog.setFileFilter(txtFilter);
@@ -64,7 +67,7 @@ public class OpenFrm extends JFrame{
 	}
 	
 	public static OpenFrm getFrm() {
-		mFrm.setBounds(MainFrm.getmFrm().getX()+MainFrm.WIDTH / 3, MainFrm.getmFrm().getY()+MainFrm.HEIGHT / 3, MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3);
+		mFrm.setBounds(CreateFrm.getFrmBound());
 		return mFrm;
 	}
 }

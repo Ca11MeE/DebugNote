@@ -1,8 +1,7 @@
 package frms;
 
+import java.awt.Rectangle;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
@@ -10,8 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import app.DebugNote;
 import main.FrmHead;
 import main.MainFrm;
+import utils.FileReader;
+import utils.ListSort;
 
 public class CreateFrm extends JFrame{
 	
@@ -20,12 +22,16 @@ public class CreateFrm extends JFrame{
 	private static FrmHead frmHead = new FrmHead(mFrm);
 	private static FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("TXT File", "txt");
 	private static FileNameExtensionFilter dbnFilter = new FileNameExtensionFilter("DBN File", "dbn");
-
+	private static Rectangle frmBound=new Rectangle(DebugNote.getmFrm().getX()+DebugNote.getmFrm().getWidth() / 4,
+			DebugNote.getmFrm().getY()+DebugNote.getmFrm().getHeight()  / 4,
+			DebugNote.getmFrm().getWidth()  / 2, 
+			DebugNote.getmFrm().getHeight()  / 2);
+	
 	
 	static{
 		mFrm.setUndecorated(true);
 		mFrm.setLayout(null);
-		mFrm.setBounds(MainFrm.getmFrm().getX()+MainFrm.WIDTH / 3, MainFrm.getmFrm().getY()+MainFrm.HEIGHT / 3, MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3);
+		mFrm.setBounds(getFrmBound());
 		createDialog=new JFileChooser(){
 
 			@Override
@@ -37,7 +43,17 @@ public class CreateFrm extends JFrame{
 			public void approveSelection() {
 				//新建文件并保存
 				String path = createDialog.getSelectedFile().getPath();
-				File createFile =new File(path);
+				File createFile =new File(path+"."+((FileNameExtensionFilter)createDialog.getFileFilter()).getExtensions()[0]);
+				//默认以dbn形式写出文件
+				int fileType=0;
+				switch (((FileNameExtensionFilter)createDialog.getFileFilter()).getExtensions()[0]) {
+				case "txt":
+					fileType=FileReader.TXT_TYPE;
+					break;
+				case "dbn":
+					fileType=FileReader.DBN_TYPE;
+					break;
+				}
 				//文件存在
 				if (createFile.exists()) {
 					int result = JOptionPane.showConfirmDialog(mFrm, "文件已存在,是否覆盖?");
@@ -48,7 +64,16 @@ public class CreateFrm extends JFrame{
 						try {
 							createFile.createNewFile();
 							//文件列表框添加新建文件路径
-							//文本编辑框打开该文件
+							ListSort.allPathAdd(createFile.getPath());
+							MainFrm.updateFullPathList();
+							MainFrm.updateHeadList();
+							try {
+								FileReader.writeWithExample(fileType, createFile);
+								//文本编辑框打开该文件
+								DebugNote.getText().read(createFile);
+							} catch (Exception e) {
+								JOptionPane.showMessageDialog(mFrm, e.getMessage());
+							}
 						} catch (IOException e) {
 							JOptionPane.showMessageDialog(mFrm, "文件创建失败");
 						}
@@ -61,6 +86,17 @@ public class CreateFrm extends JFrame{
 					//文件不存在
 					try {
 						createFile.createNewFile();
+						//文件列表框添加新建文件路径
+						ListSort.allPathAdd(createFile.getPath());
+						MainFrm.updateFullPathList();
+						MainFrm.updateHeadList();
+						try {
+							FileReader.writeWithExample(fileType, createFile);
+							//文本编辑框打开该文件
+							DebugNote.getText().read(createFile);
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(mFrm, e.getMessage());
+						}
 					} catch (IOException e) {
 						
 					}
@@ -75,7 +111,7 @@ public class CreateFrm extends JFrame{
 		};
 		createDialog.setDialogType(JFileChooser.SAVE_DIALOG);
 		//添加文件过滤器
-		createDialog.setAcceptAllFileFilterUsed(true);
+		createDialog.setAcceptAllFileFilterUsed(false);
 		createDialog.addChoosableFileFilter(dbnFilter);
 		createDialog.addChoosableFileFilter(txtFilter);
 //		createDialog.setFileFilter(txtFilter);
@@ -94,7 +130,16 @@ public class CreateFrm extends JFrame{
 	}
 	
 	public static CreateFrm getFrm() {
-		mFrm.setBounds(MainFrm.getmFrm().getX()+MainFrm.WIDTH / 3, MainFrm.getmFrm().getY()+MainFrm.HEIGHT / 3, MainFrm.WIDTH / 3, MainFrm.HEIGHT / 3);
+		mFrm.setBounds(getFrmBound());
 		return mFrm;
 	}
+
+	public static Rectangle getFrmBound() {
+		return new Rectangle(DebugNote.getmFrm().getX()+DebugNote.getmFrm().getWidth() / 4,
+				DebugNote.getmFrm().getY()+DebugNote.getmFrm().getHeight()  / 4,
+				DebugNote.getmFrm().getWidth()  / 2, 
+				DebugNote.getmFrm().getHeight()  / 2);
+	}
+	
+	
 }

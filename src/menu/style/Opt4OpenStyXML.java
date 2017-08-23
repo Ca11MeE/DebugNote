@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import app.DebugNote;
 import main.MainFrm;
 import utils.StyleInitor;
 
@@ -28,8 +29,8 @@ public class Opt4OpenStyXML extends JFrame{
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MainFrm.getText().read(StyleInitor.getStyconfFile());
-				MainFrm.getHeadPane().setLblText(StyleInitor.getStyconfFile().getPath());
+				DebugNote.getText().read(StyleInitor.getStyconfFile());
+				DebugNote.getHeadPane().setLblText(StyleInitor.getStyconfFile().getPath());
 				hideFrm();
 			}
 			

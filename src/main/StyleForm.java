@@ -24,6 +24,7 @@ import javax.swing.text.StyleConstants;
 
 import org.junit.Test;
 
+import app.DebugNote;
 import menu.style.Opt4OpenStyXML;
 import utils.StyleInitor;
 
@@ -47,11 +48,11 @@ public class StyleForm extends JPanel {
 		inputStyle.setOpaque(true);
 		inputStyle.setBackground(Color.white);
 		inputStyle.setForeground(Color.black);
-		inputStyle.setBounds(MainFrm.getmFrm().getWidth() / 20 * 17, 0, MainFrm.getmFrm().getWidth() / 20 * 3,
-				MainFrm.getmFrm().getHeight() / 20);
+		inputStyle.setBounds(DebugNote.getmFrm().getWidth() / 20 * 17, 0, DebugNote.getmFrm().getWidth() / 20 * 3,
+				DebugNote.getmFrm().getHeight() / 20);
 		this.add(inputStyle);
 		initStyle();
-		stylePanel.setBounds(0, 0, MainFrm.getmFrm().getWidth() / 20 * 17, MainFrm.getmFrm().getHeight() / 20);
+		stylePanel.setBounds(0, 0, DebugNote.getmFrm().getWidth() / 20 * 17, DebugNote.getmFrm().getHeight() / 20);
 		this.add(stylePanel);
 		this.updateUI();
 		inputStyle.addMouseListener(new MouseAdapter() {
@@ -88,9 +89,9 @@ public class StyleForm extends JPanel {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				stylePanel.setBounds(0, 0, MainFrm.getmFrm().getWidth() / 20 * 17, MainFrm.getmFrm().getHeight() / 20);
-				inputBuffer.setBounds(MainFrm.getmFrm().getWidth() / 20 * 17, 0, MainFrm.getmFrm().getWidth() / 20 * 3,
-						MainFrm.getmFrm().getHeight() / 20);
+				stylePanel.setBounds(0, 0, DebugNote.getmFrm().getWidth() / 20 * 17, DebugNote.getmFrm().getHeight() / 20);
+				inputBuffer.setBounds(DebugNote.getmFrm().getWidth() / 20 * 17, 0, DebugNote.getmFrm().getWidth() / 20 * 3,
+						DebugNote.getmFrm().getHeight() / 20);
 			}
 
 			@Override

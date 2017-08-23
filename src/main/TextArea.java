@@ -152,7 +152,6 @@ public class TextArea {
 		char[] bufferC = new char[1024];
 		boolean endMark = false;
 		boolean mark = false;
-
 		/*
 		 * 20170811待解决 .dbn文件读取
 		 */
@@ -268,6 +267,8 @@ public class TextArea {
 		return jtp;
 	}
 
+	
+	
 	public static void saveText() {
 		
 		
@@ -310,14 +311,8 @@ public class TextArea {
 		 */
 		if (Head.getTitle().getText()!="" && Head.getTitle().getText()!=null) {
 			filePath=Head.getTitle().getText();
-			switch (SaveFrm.getmFrm().getSaveType().getSelectedItem().toString()) {
-			case "*.txt":
-				SaveFrm.getmFrm().saveAsTXT(filePath);
-				break;
-			case "*.dbn":
-				SaveFrm.getmFrm().saveAsDBN(filePath);
-				break;
-			}
+			File file = new File(filePath);
+			SaveFrm.getmFrm().saveBtnClick(file);
 			
 		}else {
 			SaveFrm.showFrm();

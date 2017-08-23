@@ -26,6 +26,7 @@ import javax.swing.SwingConstants;
 
 import com.sun.xml.internal.ws.org.objectweb.asm.Label;
 
+import app.DebugNote;
 import frms.CreateFrm;
 import frms.OpenFrm;
 import menu.file.MainMenu;
@@ -92,7 +93,7 @@ public class Head extends JPanel {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				mFrmLoc = MainFrm.getmFrm().getLocation();
+				mFrmLoc = DebugNote.getmFrm().getLocation();
 				pOnS = e.getLocationOnScreen();
 
 				wid = pOnS.getX() - mFrmLoc.getX();
@@ -106,10 +107,10 @@ public class Head extends JPanel {
 				Rectangle bounds = configurations[0].getBounds();
 				if (e.getClickCount() == 2) {
 					if (MainFrm.fullScrean) {
-						MainFrm.getmFrm().setSize(MainFrm.WIDTH, MainFrm.HEIGHT);
+						DebugNote.getmFrm().setSize(DebugNote.WIDTH, DebugNote.HEIGHT);
 						MainFrm.fullScrean = false;
 					} else {
-						MainFrm.getmFrm().setBounds(bounds);
+						DebugNote.getmFrm().setBounds(bounds);
 						MainFrm.fullScrean =true;
 
 					}
@@ -122,7 +123,7 @@ public class Head extends JPanel {
 				GraphicsConfiguration[] configurations = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]
 						.getConfigurations();
 				Rectangle bounds = configurations[0].getBounds();
-				JFrame getmFrm = MainFrm.getmFrm();
+				JFrame getmFrm = DebugNote.getmFrm();
 				if (getmFrm.getLocation().getX()<0 && e.getLocationOnScreen().getX()<1) {
 					getmFrm.setBounds(0, 0, (int)bounds.getWidth()/2, (int)bounds.getHeight());
 				}
@@ -130,7 +131,7 @@ public class Head extends JPanel {
 					getmFrm.setBounds((int)bounds.getWidth()/2, 0, (int)bounds.getWidth()/2, (int)bounds.getHeight());
 				}
 				if (getmFrm.getLocation().getY()<0 && e.getLocationOnScreen().getY()<2) {
-					MainFrm.getmFrm().setBounds(bounds);
+					DebugNote.getmFrm().setBounds(bounds);
 					MainFrm.fullScrean =true;
 				}
 			}
@@ -143,7 +144,7 @@ public class Head extends JPanel {
 			public void mouseDragged(MouseEvent e) {
 				pOnS = e.getLocationOnScreen();
 				point.setLocation((pOnS.getX() - wid), (pOnS.getY() - hei));
-				MainFrm.getmFrm().setLocation(point);
+				DebugNote.getmFrm().setLocation(point);
 			}
 
 		});
