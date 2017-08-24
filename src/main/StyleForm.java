@@ -166,4 +166,9 @@ public class StyleForm extends JPanel {
 		return defaultStyle;
 	}
 
+	public void reSize() {
+		stylePanel.setBounds(0, 0, DebugNote.getmFrm().getWidth() / 20 * 17, DebugNote.getmFrm().getHeight() / 20);
+		inputStyle.setBounds(DebugNote.getmFrm().getWidth() / 20 * 17, 0, DebugNote.getmFrm().getWidth() / 20 * 3,
+				DebugNote.getmFrm().getHeight() / 20);
+	}
 }

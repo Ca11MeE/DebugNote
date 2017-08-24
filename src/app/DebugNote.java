@@ -35,6 +35,11 @@ public class DebugNote {
 
 	// 程序窗口
 	private static JFrame app = new JFrame("DebugNote");
+	// 鼠标按下时的位置记录
+	private static Point mouseLocBefore;
+	private static int frmSizeWidthBefore;
+	private static int frmSizeHeightBefore;
+	private static boolean reSizeOn = false;
 	// 程序主界面
 	private static JPanel mFrm = new JPanel();
 	/*
@@ -48,28 +53,47 @@ public class DebugNote {
 	private static MainFrm mf = new MainFrm();
 
 	// 监听器
+	private static MouseAdapter frmSizeAdapter4Mouse = new MouseAdapter() {
+		@Override
+		public void mousePressed(MouseEvent e) {
+			mouseLocBefore = e.getLocationOnScreen();
+			frmSizeWidthBefore = DebugNote.getmFrm().getWidth();
+			frmSizeHeightBefore = DebugNote.getmFrm().getHeight();
+			if (frmSizeChangeType != DebugNote.FRM_RECT_INNER) {
+				reSizeOn = true;
+			}
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			reSizeOn = false;
+		}
+
+	};
 	private static MouseAdapter frmSizeAdapter = new MouseAdapter() {
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			
-			int chkResult = chkRectType(e.getLocationOnScreen());
-			switch (chkResult) {
-			case FRM_RECT_LEFT:
-				app.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
-				break;
-			case FRM_RECT_BOTTOM:
-				app.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));
-				break;
-			case FRM_RECT_RIGHT:
-				app.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
-				break;
-			case FRM_RECT_TOP:
-				app.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));
-				break;
+			if (!reSizeOn) {
+				int chkResult = chkRectType(e.getLocationOnScreen());
+				switch (chkResult) {
+				case FRM_RECT_LEFT:
+					app.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+					break;
+				case FRM_RECT_BOTTOM:
+					app.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));
+					break;
+				case FRM_RECT_RIGHT:
+					app.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+					break;
+				case FRM_RECT_TOP:
+					app.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));
+					break;
 
-			default:
-				app.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				break;
+				default:
+					app.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					break;
+				}
+				frmSizeChangeType = chkResult;
 			}
 		}
 
@@ -77,10 +101,49 @@ public class DebugNote {
 		public void mouseExited(MouseEvent e) {
 			app.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
-		
-		
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			if (reSizeOn) {
+
+				Point mouseLoc = e.getLocationOnScreen();
+				Point frmLoc = DebugNote.getmFrm().getLocationOnScreen();
+				switch (frmSizeChangeType) {
+				case FRM_RECT_LEFT:
+					// 左
+					DebugNote.getmFrm().setBounds((int) mouseLoc.getX(), (int) frmLoc.getY(),
+							DebugNote.getFrmSizeWidthBefore() - (int) (mouseLoc.getX() - mouseLocBefore.getX()),
+							DebugNote.getFrmSizeHeightBefore());
+					break;
+				case FRM_RECT_BOTTOM:
+					// 下
+					DebugNote.getmFrm().setLocation(frmLoc);
+					DebugNote.getmFrm().setSize(
+							DebugNote.getFrmSizeWidthBefore(),
+							DebugNote.getFrmSizeHeightBefore()+(int)(mouseLoc.getY()-mouseLocBefore.getY()));
+					break;
+				case FRM_RECT_RIGHT:
+					//右
+					DebugNote.getmFrm().setLocation(frmLoc);
+					DebugNote.getmFrm().setSize(
+							DebugNote.getFrmSizeWidthBefore() + (int) (mouseLoc.getX() - mouseLocBefore.getX()),
+							DebugNote.getFrmSizeHeightBefore());
+					break;
+				case FRM_RECT_TOP:
+					// 上
+					DebugNote.getmFrm().setBounds((int) frmLoc.getX(), (int) mouseLoc.getY(),
+							DebugNote.getFrmSizeWidthBefore(),
+							DebugNote.getFrmSizeHeightBefore()-(int)(mouseLoc.getY()-mouseLocBefore.getY()));
+					break;
+
+				default:
+					app.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					break;
+				}
+			}
+		}
+
 	};
-	
 
 	public static void main(String[] args) {
 
@@ -108,31 +171,45 @@ public class DebugNote {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				
+				DebugNote.getSf().reSize();
 			}
 
 			@Override
 			public void componentResized(ComponentEvent e) {
 				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				
+				DebugNote.getSf().reSize();
 			}
 
 			@Override
 			public void componentMoved(ComponentEvent e) {
 				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				
+				DebugNote.getSf().reSize();
 			}
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
 				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				
+				DebugNote.getSf().reSize();
 			}
 		});
 
 		// 添加窗口调整大小触发器
-
 		mFrm.addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		headPane.getTitle().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		mf.getLeftPane().getViewport().getView().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		mf.getjComboBox().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		text.getTextlist().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
+		//--------------------------------------------------------------------------------------------------
+		mFrm.addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
+		headPane.getTitle().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
+		mf.getLeftPane().getViewport().getView().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
+		mf.getjComboBox().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
+		text.getTextlist().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
+		//--------------------------------------------------------------------------------------------------
 		app.add(mFrm);
 		app.setVisible(true);
 
@@ -181,5 +258,16 @@ public class DebugNote {
 		return frmSizeAdapter;
 	}
 
-	
+	public static MouseAdapter getFrmSizeAdapter4Mouse() {
+		return frmSizeAdapter4Mouse;
+	}
+
+	public static int getFrmSizeWidthBefore() {
+		return frmSizeWidthBefore;
+	}
+
+	public static int getFrmSizeHeightBefore() {
+		return frmSizeHeightBefore;
+	}
+
 }

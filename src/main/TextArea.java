@@ -1,5 +1,8 @@
 package main;
 
+import java.awt.Cursor;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -9,14 +12,18 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 
+import app.DebugNote;
 import frms.CreateFrm;
 import frms.SaveFrm;
+import javafx.scene.input.MouseButton;
+import menu.textarea.TextAreaMenu;
 
 
 public class TextArea {
@@ -35,7 +42,8 @@ public class TextArea {
 	// 保存位置变量
 	private static int x = 0;
 	private static int y = 0;
-
+	//保存垂直滚动条对象
+	private static JScrollBar verticalScrollBar;
 	public JScrollPane getTextlist() {
 		return textlist;
 	}
@@ -43,9 +51,31 @@ public class TextArea {
 	public TextArea() {
 		defAttr = StyleForm.getDefaultStyle();
 		// 设置自动换行
-		textlist = new JScrollPane(jtp, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+		textlist = new JScrollPane(jtp, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+		verticalScrollBar = textlist.getVerticalScrollBar();
+		
+		verticalScrollBar.addMouseListener(new MouseAdapter() {
+			
+			/**
+			 * 鼠标进入显示垂直滚动条 ,并设置鼠标图标
+			 */
+			public void mouseEntered(MouseEvent e) {
+				textlist.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+				DebugNote.getmFrm().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			/**
+			 * 鼠标离开隐藏垂直滚动条 
+			 */
+			public void mouseExited(MouseEvent e) {
+				textlist.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+			}
+			
+			
+		});
+		
 		jtp.addKeyListener(new KeyAdapter() {
 
 			public void keyTyped(KeyEvent e) {
@@ -116,8 +146,31 @@ public class TextArea {
 
 		jtp.addMouseListener(new MouseAdapter() {
 
+			/**
+			 * 鼠标进入显示垂直滚动条 
+			 */
+			public void mouseEntered(MouseEvent e) {
+				textlist.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			}
+
+			/**
+			 * 鼠标离开隐藏垂直滚动条 
+			 */
+			public void mouseExited(MouseEvent e) {
+				textlist.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+			}
+
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton()==MouseEvent.BUTTON3) {
+					TextAreaMenu.getMenu().setLocation(e.getLocationOnScreen());
+					TextAreaMenu.getMenu().setVisible(true);
+				}
+			}
+			
+			
 			
 		});
+	
 	}
 
 	public void read(File file) {

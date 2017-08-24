@@ -1,36 +1,26 @@
 package main;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout.Constraints;
 import javax.swing.SwingConstants;
 
-import com.sun.xml.internal.ws.org.objectweb.asm.Label;
 
 import app.DebugNote;
 import frms.CreateFrm;
 import frms.OpenFrm;
-import menu.file.MainMenu;
-import sun.net.www.content.text.plain;
 
 public class Head extends JPanel {
 	private static JButton closeButton = new JButton("关闭");

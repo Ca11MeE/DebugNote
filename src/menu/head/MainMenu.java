@@ -1,4 +1,4 @@
-package menu.file;
+package menu.head;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
