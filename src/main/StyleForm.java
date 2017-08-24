@@ -171,4 +171,10 @@ public class StyleForm extends JPanel {
 		inputStyle.setBounds(DebugNote.getmFrm().getWidth() / 20 * 17, 0, DebugNote.getmFrm().getWidth() / 20 * 3,
 				DebugNote.getmFrm().getHeight() / 20);
 	}
+
+	public static List<JLabel> getStyles() {
+		return styles;
+	}
+	
+	
 }
