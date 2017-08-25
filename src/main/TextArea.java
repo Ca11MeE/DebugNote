@@ -385,4 +385,9 @@ public class TextArea {
 		// String selectedText = jtp.getSelectedText();
 		jtp.setCharacterAttributes(StyleForm.getDefaultStyle(), true);
 	}
+	
+	public static void changeSelectedStyle(SimpleAttributeSet attr) {
+		// String selectedText = jtp.getSelectedText();
+		jtp.setCharacterAttributes(attr, true);
+	}
 }
