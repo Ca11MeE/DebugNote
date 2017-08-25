@@ -4,5 +4,13 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="src/dom4j-1.6.1.jar" sourcepath="H:/Tarena_File/IDE&amp;SorfWare/Drivers/dom4j-1.6.1/src"/>
+	<classpathentry kind="lib" path="/Users/keliyi/Downloads/poi-3.17-beta1/poi-3.17-beta1.jar"/>
+	<classpathentry kind="lib" path="/Users/keliyi/Downloads/poi-3.17-beta1/lib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="/Users/keliyi/Downloads/poi-3.17-beta1/lib/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="/Users/keliyi/Downloads/poi-3.17-beta1/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="/Users/keliyi/Downloads/poi-3.17-beta1/lib/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="/Users/keliyi/Downloads/poi-3.17-beta1/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="/Users/keliyi/Downloads/poi-3.17-beta1/poi-ooxml-3.17-beta1.jar"/>
+	<classpathentry kind="lib" path="/Users/keliyi/Downloads/poi-3.17-beta1/poi-scratchpad-3.17-beta1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

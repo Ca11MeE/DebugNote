@@ -390,4 +390,5 @@ public class TextArea {
 		// String selectedText = jtp.getSelectedText();
 		jtp.setCharacterAttributes(attr, true);
 	}
+
 }

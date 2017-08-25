@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import com.sun.xml.internal.ws.org.objectweb.asm.Label;
+
 import app.DebugNote;
 import main.StyleForm;
 import main.TextArea;
@@ -20,7 +22,6 @@ import utils.StyleInitor;
 
 public class TextAreaMenu extends JPopupMenu{
 	private List<JMenuItem> styles=new LinkedList<JMenuItem>();
-	private List<JLabel> lblTemp=new LinkedList<JLabel>();
 	private static TextAreaMenu menu=new TextAreaMenu();
 	
 	private TextAreaMenu(){
@@ -31,23 +32,21 @@ public class TextAreaMenu extends JPopupMenu{
 		return menu;
 	}
 	
-	/*
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * 
-	 * 
-	 */
+	
 	public void addStyles(){
 		this.removeAll();
 		styles.clear();
 		List<JLabel> list = StyleForm.getStyles();
 		for (JLabel jLabel : list) {
-			lblTemp.add(jLabel);
 			JMenuItem addStyle = new JMenuItem();
+			addStyle.setText(jLabel.getText());
+			addStyle.setForeground(jLabel.getForeground());
+			addStyle.setBackground(jLabel.getBackground());
 			addStyle.addMouseListener(new MouseAdapter() {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					
+					TextArea.changeSelectedStyle(StyleInitor.getInitStyleList().get(((JMenuItem)e.getComponent()).getText()));
 					menu.setVisible(false);
 				}
 				

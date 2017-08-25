@@ -33,7 +33,7 @@ public class MainFrm extends JPanel {
 	private static JList<String> headList = null;
 	private static JList<String> fullPathList = null;
 	private static JScrollPane leftPane = null;
-	
+	 
 	private static JComboBox<String> jComboBox = new JComboBox<String>();
 	
 	private static JLabel hideJLabel = new JLabel("<");
