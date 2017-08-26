@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import com.sun.xml.internal.ws.org.objectweb.asm.Label;
 
@@ -23,6 +25,28 @@ import utils.StyleInitor;
 public class TextAreaMenu extends JPopupMenu{
 	private List<JMenuItem> styles=new LinkedList<JMenuItem>();
 	private static TextAreaMenu menu=new TextAreaMenu();
+	
+	static {
+		
+		menu.addPopupMenuListener(new PopupMenuListener() {
+			
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				System.out.println("BecomeVisible");
+			}
+			
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				System.out.println("BecomeInvisible");				
+			}
+			
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				System.out.println("BecomeInvisible");				
+			}
+		});
+		
+	}
 	
 	private TextAreaMenu(){
 		this.setLabel("文件操作");

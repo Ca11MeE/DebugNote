@@ -175,6 +175,16 @@ public class StyleForm extends JPanel {
 	public static List<JLabel> getStyles() {
 		return styles;
 	}
+
+	public static JLabel getInputBuffer() {
+		return inputBuffer;
+	}
+
+	public static JLabel getInputStyle() {
+		return inputStyle;
+	}
+	
+	
 	
 	
 }

@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -7,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.TextListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -16,17 +19,30 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.text.AttributeSet;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
+
+import org.junit.Test;
+
+import com.sun.org.apache.bcel.internal.classfile.LineNumber;
 
 import app.DebugNote;
 import frms.CreateFrm;
 import frms.SaveFrm;
 import javafx.scene.input.MouseButton;
+import menu.head.MainMenu;
+import menu.style.Opt4OpenStyXML;
+import menu.textarea.LineBar;
+import menu.textarea.LineBarMenu;
+import menu.textarea.LineNumberBorder;
 import menu.textarea.TextAreaMenu;
 import utils.StyleInitor;
 
@@ -48,17 +64,24 @@ public class TextArea {
 	private static int y = 0;
 	// 保存垂直滚动条对象
 	private static JScrollBar verticalScrollBar;
+	private static LineBar lineBar=new LineBar();
 
 	public JScrollPane getTextlist() {
 		return textlist;
 	}
 
+	
+	/**
+	 * 
+	 */
 	public TextArea() {
 		defAttr = StyleForm.getDefaultStyle();
 		// 设置自动换行
 		textlist = new JScrollPane(jtp, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+		//textlist.setRowHeaderView(lineBar);
+		
 		verticalScrollBar = textlist.getVerticalScrollBar();
 
 		verticalScrollBar.addMouseListener(new MouseAdapter() {
@@ -83,6 +106,7 @@ public class TextArea {
 		jtp.addKeyListener(new KeyAdapter() {
 
 			public void keyTyped(KeyEvent e) {
+				jtp.setBorder(LineNumberBorder.getMainBar());
 				if (defAttr != StyleForm.getDefaultStyle()) {
 					defAttr = StyleForm.getDefaultStyle();
 				}
@@ -165,13 +189,15 @@ public class TextArea {
 
 					TextAreaMenu.getMenu().addStyles();
 					TextAreaMenu.getMenu().setVisible(true);
+					
 				} else {
 					TextAreaMenu.getMenu().setVisible(false);
 				}
 			}
 
 		});
-
+		
+		
 	}
 
 	public void read(File file) {
@@ -207,6 +233,7 @@ public class TextArea {
 		boolean mark = false;
 		/*
 		 * 20170811待解决 .dbn文件读取
+		 * 已解决
 		 */
 		try {
 
@@ -252,11 +279,17 @@ public class TextArea {
 					// 将流读入数据写入文档对象中
 					dtext.insertString(dtext.getLength(), readString, null);
 				}
+				
+				
+				jtp.setBorder(LineNumberBorder.getMainBar());
 				break;
 			case ".dbn":
 				FileInputStream fis = new FileInputStream(file);
 				ObjectInputStream objIn = new ObjectInputStream(fis);
 				dtext = (DefaultStyledDocument) objIn.readObject();
+				
+				
+				jtp.setBorder(null);
 				break;
 
 			default:
@@ -268,6 +301,9 @@ public class TextArea {
 					// 将流读入数据写入文档对象中
 					dtext.insertString(dtext.getLength(), readString, null);
 				}
+				
+				
+				jtp.setBorder(new LineNumberBorder(Color.red));
 				break;
 			}
 
@@ -305,10 +341,12 @@ public class TextArea {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 
 	}
 
 	public static JTextPane getJTP() {
+		jtp.setBorder(LineNumberBorder.getMainBar());
 		return jtp;
 	}
 

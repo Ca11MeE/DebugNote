@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 import app.DebugNote;
 import frms.CreateFrm;
 import frms.OpenFrm;
+import menu.textarea.TextAreaMenu;
 
 public class Head extends JPanel {
 	private static JButton closeButton = new JButton("关闭");
