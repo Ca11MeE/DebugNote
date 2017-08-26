@@ -57,7 +57,7 @@ public class TextAreaMenu extends JPopupMenu{
 		}
 		
 		for (JMenuItem jMenuItem : styles) {
-			this.add(jMenuItem);
+			this.add(jMenuItem); 
 		}
 	}
 

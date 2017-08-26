@@ -213,7 +213,7 @@ public class MainFrm extends JPanel {
 		headList.addMouseListener(new MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) { 
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					menu.view.MainMenu.getMainFrmMenu().setLocation((int) e.getLocationOnScreen().getX(),
 							(int) e.getLocationOnScreen().getY());
