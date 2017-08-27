@@ -106,7 +106,13 @@ public class TextArea {
 		jtp.addKeyListener(new KeyAdapter() {
 
 			public void keyTyped(KeyEvent e) {
-				jtp.setBorder(LineNumberBorder.getMainBar());
+//				jtp.setBorder(LineNumberBorder.getMainBar());
+//				String[] splits=TextArea.getJTP().getText().split("\\n");
+//				for (String string : splits) {
+//					float height = jtp.getFontMetrics(jtp.getFont()).getLineMetrics(string,jtp.getGraphics()).getHeight();
+//					System.out.println(height);
+//				}
+//				
 				if (defAttr != StyleForm.getDefaultStyle()) {
 					defAttr = StyleForm.getDefaultStyle();
 				}
@@ -184,7 +190,7 @@ public class TextArea {
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON3) {
+				if (e.getButton() == MouseEvent.BUTTON3 && DebugNote.getSf().isVisible()) {
 					TextAreaMenu.getMenu().setLocation(e.getLocationOnScreen());
 
 					TextAreaMenu.getMenu().addStyles();
@@ -281,15 +287,22 @@ public class TextArea {
 				}
 				
 				
+				//添加行号条
 				jtp.setBorder(LineNumberBorder.getMainBar());
+				
+				//不显示样式面板
+				DebugNote.getSf().setVisible(false);
+				
 				break;
 			case ".dbn":
 				FileInputStream fis = new FileInputStream(file);
 				ObjectInputStream objIn = new ObjectInputStream(fis);
 				dtext = (DefaultStyledDocument) objIn.readObject();
 				
-				
+				//取消显示行号条
 				jtp.setBorder(null);
+				//显示样式窗口
+				DebugNote.getSf().setVisible(true);
 				break;
 
 			default:
@@ -302,8 +315,10 @@ public class TextArea {
 					dtext.insertString(dtext.getLength(), readString, null);
 				}
 				
-				
-				jtp.setBorder(new LineNumberBorder(Color.red));
+				//添加行行号条
+				jtp.setBorder(LineNumberBorder.getMainBar());
+				//不显示样式窗口
+				DebugNote.getSf().setVisible(false);
 				break;
 			}
 

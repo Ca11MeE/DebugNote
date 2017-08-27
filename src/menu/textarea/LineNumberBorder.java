@@ -14,27 +14,24 @@ import javax.swing.border.LineBorder;
 
 import app.DebugNote;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import main.StyleForm;
 import main.TextArea;
 
 public class LineNumberBorder extends LineBorder {
 
 	private static final Component JTextPane = TextArea.getJTP();
-	private static LineNumberBorder mainBar=new LineNumberBorder(Color.red);
-	
-	
-	public LineNumberBorder(Color color) {
+	private static LineNumberBorder mainBar = new LineNumberBorder(Color.red);
+	private int borderWidth;
+
+	private LineNumberBorder(Color color) {
 		super(color);
 	}
 
-	
-	
 	public static LineNumberBorder getMainBar() {
-		
+
 		return mainBar;
 	}
-
-
 
 	/*
 	 * Insets 对象是容器边界的表示形式。 它指定容器必须在其各个边缘留出的空间。
@@ -48,7 +45,9 @@ public class LineNumberBorder extends LineBorder {
 	public Insets getBorderInsets(Component c, Insets insets) {
 		if (c instanceof JTextPane) {
 			// 这里设置行号左边边距
-			insets.left = TextArea.getJTP().getFontMetrics(StyleForm.getStyles().get(0).getFont()).getHeight()*3;
+			insets.left = 40;
+			borderWidth=TextArea.getJTP().getFontMetrics(StyleForm.getStyles().get(0).getFont()).stringWidth(StyleForm.getStyles().get(0).getText().substring(0,1)) * 4+3;
+					//TextArea.getJTP().getFontMetrics(StyleForm.getStyles().get(0).getFont()).stringWidth(StyleForm.getStyles().get(0).getText().substring(0,1)) * 4+3;
 		}
 
 		return insets;
@@ -70,9 +69,9 @@ public class LineNumberBorder extends LineBorder {
 		 * 
 		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		 */
-		int fontHeight =fm.getHeight();
-				//(int)fm.getLineMetrics(TextArea.getJTP().getText().split("\\n")[0], g).getHeight();
-		System.out.println((int)fm.getLineMetrics(TextArea.getJTP().getText().split("\\n")[0], g).getHeight());
+		int fontHeight = fm.getHeight()+fm.getLeading();
+		// (int)fm.getLineMetrics(TextArea.getJTP().getText().split("\\n")[0],
+		// g).getHeight();
 		// starting location at the "top" of the page...
 		// y is the starting baseline for the font...
 		int ybaseline = y + fm.getAscent();
@@ -82,25 +81,33 @@ public class LineNumberBorder extends LineBorder {
 		int startingLineNumber = (clip.y / fontHeight) + 1;
 
 		if (startingLineNumber != 1) {
-			ybaseline = y + startingLineNumber * fontHeight - (fontHeight - fm.getAscent());
+			ybaseline = y + startingLineNumber * fontHeight - (fontHeight);
 		}
 
 		int yend = ybaseline + height;
 		if (yend > (y + height)) {
 			yend = y + height;
 		}
+		int lineWidth = fm.stringWidth(startingLineNumber+"");
+		int index = 0;
+		String[] splits=TextArea.getJTP().getText().split("\\n");
 		g.setColor(Color.red);
-		g.fill3DRect(0, (ybaseline-fontHeight), TextArea.getJTP().getFontMetrics(StyleForm.getStyles().get(0).getFont()).getHeight()*3, fontHeight,true);
+		g.fill3DRect(0, ybaseline- fontHeight+fm.getDescent(), borderWidth, fontHeight+fm.getDescent(), true);
 		// 绘制行号
 		while (ybaseline < yend) {
 			String label = padLabel(startingLineNumber, 0, true);
-			//设置行号背景色
+			int lineHeight = index < splits.length
+					? (int) fm.getLineMetrics(splits[index], g).getHeight()
+					: fm.getAscent();
+			// 设置行号背景色
 			g.setColor(JTextPane.getBackground().darker());
-			g.fill3DRect(0, ybaseline,TextArea.getJTP().getFontMetrics(StyleForm.getStyles().get(0).getFont()).getHeight()*3, fontHeight,true);
+			g.fill3DRect(0, ybaseline+fm.getDescent(), borderWidth, fontHeight+fm.getDescent(), true);
 			g.setColor(TextArea.getJTP().getForeground());
+			g.setFont(StyleForm.getStyles().get(0).getFont());
 			g.drawString(label, 0, ybaseline);
 			ybaseline += fontHeight;
 			startingLineNumber++;
+			index++;
 		}
 	}
 
@@ -123,7 +130,7 @@ public class LineNumberBorder extends LineBorder {
 
 			}
 		}
-		buffer.insert(1,lineNumber);
+		buffer.insert(1, lineNumber);
 		return buffer.toString();
 	}
 

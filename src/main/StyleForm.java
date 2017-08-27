@@ -38,7 +38,7 @@ public class StyleForm extends JPanel {
 	private static SimpleAttributeSet defaultStyle = new SimpleAttributeSet();
 
 	public StyleForm() {
-		this.setPreferredSize(new Dimension(MainFrm.WIDTH, MainFrm.HEIGHT / 20));
+		this.setPreferredSize(new Dimension(MainFrm.WIDTH, MainFrm.HEIGHT / 20*3));
 		this.setLayout(new GridLayout(1, 5));
 		init();
 	}
@@ -49,9 +49,10 @@ public class StyleForm extends JPanel {
 		inputStyle.setBackground(Color.white);
 		inputStyle.setForeground(Color.black);
 		inputStyle.setBounds(DebugNote.getmFrm().getWidth() / 20 * 17, 0, DebugNote.getmFrm().getWidth() / 20 * 3,
-				DebugNote.getmFrm().getHeight() / 20);
+				MainFrm.HEIGHT / 20);
 		this.add(inputStyle);
 		initStyle();
+		stylePanel.setLayout(new GridLayout(5, 5));
 		stylePanel.setBounds(0, 0, DebugNote.getmFrm().getWidth() / 20 * 17, DebugNote.getmFrm().getHeight() / 20);
 		this.add(stylePanel);
 		this.updateUI();
@@ -89,9 +90,9 @@ public class StyleForm extends JPanel {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				stylePanel.setBounds(0, 0, DebugNote.getmFrm().getWidth() / 20 * 17, DebugNote.getmFrm().getHeight() / 20);
+				stylePanel.setBounds(0, 0, DebugNote.getmFrm().getWidth() / 20 * 17, DebugNote.getSf().getHeight() );
 				inputBuffer.setBounds(DebugNote.getmFrm().getWidth() / 20 * 17, 0, DebugNote.getmFrm().getWidth() / 20 * 3,
-						DebugNote.getmFrm().getHeight() / 20);
+						DebugNote.getSf().getHeight());
 			}
 
 			@Override

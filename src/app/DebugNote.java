@@ -154,7 +154,7 @@ public class DebugNote {
 		sf = new StyleForm();
 		sf.setLocation(mFrm.getX(), mFrm.getY() + mFrm.getHeight());
 		sf.setPreferredSize(new Dimension(WIDTH, HEIGHT / 20));
-		sf.setVisible(true);
+		sf.setVisible(false);
 
 		MainFrm.getLeftPane().setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
 
@@ -178,6 +178,7 @@ public class DebugNote {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				sf.setPreferredSize(new Dimension(mFrm.getWidth(), mFrm.getHeight() / 20 ));
 				
 				DebugNote.getSf().reSize();
 			}
