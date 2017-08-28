@@ -11,7 +11,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import app.DebugNote;
 import main.FrmHead;
-import main.MainFrm;
+import main.LeftPane;
 import utils.FileReader;
 import utils.ListSort;
 
@@ -65,8 +65,8 @@ public class CreateFrm extends JFrame{
 							createFile.createNewFile();
 							//文件列表框添加新建文件路径
 							ListSort.allPathAdd(createFile.getPath());
-							MainFrm.updateFullPathList();
-							MainFrm.updateHeadList();
+							LeftPane.updateFullPathList();
+							LeftPane.updateHeadList();
 							try {
 								FileReader.writeWithExample(fileType, createFile);
 								//文本编辑框打开该文件
@@ -88,8 +88,8 @@ public class CreateFrm extends JFrame{
 						createFile.createNewFile();
 						//文件列表框添加新建文件路径
 						ListSort.allPathAdd(createFile.getPath());
-						MainFrm.updateFullPathList();
-						MainFrm.updateHeadList();
+						LeftPane.updateFullPathList();
+						LeftPane.updateHeadList();
 						try {
 							FileReader.writeWithExample(fileType, createFile);
 							//文本编辑框打开该文件

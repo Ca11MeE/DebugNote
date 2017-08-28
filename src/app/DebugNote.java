@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import main.Head;
-import main.MainFrm;
+import main.LeftPane;
 import main.StyleForm;
 import main.TextArea;
 import main.TopPanel;
@@ -50,7 +50,7 @@ public class DebugNote {
 	private static StyleForm sf;
 	private static Head headPane = new Head();
 	private static TextArea text = new TextArea();
-	private static MainFrm mf = new MainFrm();
+	private static LeftPane mf = new LeftPane();
 
 	// 监听器
 	private static MouseAdapter frmSizeAdapter4Mouse = new MouseAdapter() {
@@ -156,7 +156,7 @@ public class DebugNote {
 		sf.setPreferredSize(new Dimension(WIDTH, HEIGHT / 20));
 		sf.setVisible(false);
 
-		MainFrm.getLeftPane().setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
+		LeftPane.getLeftPane().setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
 
 		mFrm.add(headPane, BorderLayout.NORTH);
 		mFrm.add(sf, BorderLayout.SOUTH);
@@ -170,14 +170,14 @@ public class DebugNote {
 
 			@Override
 			public void componentShown(ComponentEvent e) {
-				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				LeftPane.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				
 				DebugNote.getSf().reSize();
 			}
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				LeftPane.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				sf.setPreferredSize(new Dimension(mFrm.getWidth(), mFrm.getHeight() / 20 ));
 				
 				DebugNote.getSf().reSize();
@@ -185,14 +185,14 @@ public class DebugNote {
 
 			@Override
 			public void componentMoved(ComponentEvent e) {
-				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				LeftPane.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				
 				DebugNote.getSf().reSize();
 			}
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
-				MainFrm.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				LeftPane.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				
 				DebugNote.getSf().reSize();
 			}

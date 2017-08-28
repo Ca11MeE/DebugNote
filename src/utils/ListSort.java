@@ -8,13 +8,13 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.ListModel;
 
-import main.MainFrm;
+import main.LeftPane;
 
 public class ListSort {
 	private static DefaultListModel<String> allPath= new DefaultListModel<String>();
 	private static DefaultListModel<String> pathResult = new DefaultListModel<String>();
 	private static DefaultListModel<String> result = new DefaultListModel<String>();
-	private static JComboBox<String> filter=MainFrm.getjComboBox();
+	private static JComboBox<String> filter=LeftPane.getjComboBox();
 	/**
 	 * 将目标列表中的所有条目根据下拉框的选择过滤出最终结果
 	 * @param target	目标列表

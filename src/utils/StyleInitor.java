@@ -22,7 +22,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import app.DebugNote;
-import main.MainFrm;
+import main.LeftPane;
 import main.StyleForm;
 
 /**
@@ -52,7 +52,7 @@ public class StyleInitor {
 	private static Boolean superscript;
 	private static Boolean underline;
 	
-	private static File styconfFile=new File(MainFrm.uriString+"styconf.xml");
+	private static File styconfFile=new File(LeftPane.uriString+"styconf.xml");
 
 	public static Map<String,SimpleAttributeSet> getInitStyleList() {
 		// 返回的样式列表

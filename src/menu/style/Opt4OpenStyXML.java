@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import app.DebugNote;
-import main.MainFrm;
 import utils.StyleInitor;
 
 public class Opt4OpenStyXML extends JFrame{

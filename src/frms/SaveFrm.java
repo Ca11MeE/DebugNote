@@ -32,7 +32,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import javafx.scene.input.KeyCode;
 import main.FrmHead;
-import main.MainFrm;
 import main.TextArea;
 import utils.FileReader;
 

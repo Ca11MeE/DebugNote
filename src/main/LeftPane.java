@@ -23,7 +23,7 @@ import app.DebugNote;
 import utils.FileReader;
 import utils.ListSort;
 
-public class MainFrm extends JPanel {
+public class LeftPane extends JPanel {
 
 	
 
@@ -93,7 +93,7 @@ public class MainFrm extends JPanel {
 	/**
 	 * 构造函数
 	 */
-	public MainFrm() {
+	public LeftPane() {
 		// 初始化隐藏文件栏标签标签
 		hideJLabel.setBackground(Color.red);
 		hideJLabel.setOpaque(true);

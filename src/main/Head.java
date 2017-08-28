@@ -97,12 +97,12 @@ public class Head extends JPanel {
 						.getConfigurations();
 				Rectangle bounds = configurations[0].getBounds();
 				if (e.getClickCount() == 2) {
-					if (MainFrm.fullScrean) {
+					if (LeftPane.fullScrean) {
 						DebugNote.getmFrm().setSize(DebugNote.WIDTH, DebugNote.HEIGHT);
-						MainFrm.fullScrean = false;
+						LeftPane.fullScrean = false;
 					} else {
 						DebugNote.getmFrm().setBounds(bounds);
-						MainFrm.fullScrean =true;
+						LeftPane.fullScrean =true;
 
 					}
 				}
@@ -123,7 +123,7 @@ public class Head extends JPanel {
 				}
 				if (getmFrm.getLocation().getY()<0 && e.getLocationOnScreen().getY()<2) {
 					DebugNote.getmFrm().setBounds(bounds);
-					MainFrm.fullScrean =true;
+					LeftPane.fullScrean =true;
 				}
 			}
 			
