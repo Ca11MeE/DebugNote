@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import main.LeftPane;
+import main.FilePane;
 import main.TextArea;
 
 public class MainMenu extends JPopupMenu {
@@ -25,7 +25,7 @@ public class MainMenu extends JPopupMenu {
 				 */
 				TextArea.createNewFile();
 				mainFrmMenu.setVisible(false);
-				LeftPane.getLeftPane().updateUI();
+				FilePane.getLeftPane().updateUI();
 			}
 
 		});

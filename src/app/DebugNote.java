@@ -1,10 +1,8 @@
 package app;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -13,13 +11,13 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 
+import main.FilePane;
 import main.Head;
 import main.LeftPane;
 import main.StyleForm;
 import main.TextArea;
-import main.TopPanel;
 
 public class DebugNote {
 
@@ -50,7 +48,7 @@ public class DebugNote {
 	private static StyleForm sf;
 	private static Head headPane = new Head();
 	private static TextArea text = new TextArea();
-	private static LeftPane mf = new LeftPane();
+	private static LeftPane lf = new LeftPane(JTabbedPane.TOP);
 
 	// 监听器
 	private static MouseAdapter frmSizeAdapter4Mouse = new MouseAdapter() {
@@ -156,11 +154,11 @@ public class DebugNote {
 		sf.setPreferredSize(new Dimension(WIDTH, HEIGHT / 20));
 		sf.setVisible(false);
 
-		LeftPane.getLeftPane().setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
+		lf.setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
 
 		mFrm.add(headPane, BorderLayout.NORTH);
 		mFrm.add(sf, BorderLayout.SOUTH);
-		mFrm.add(mf, BorderLayout.WEST);
+		mFrm.add(lf, BorderLayout.WEST);
 		mFrm.add(text.getTextlist(), BorderLayout.CENTER);
 
 		// 初始化输入法
@@ -170,14 +168,14 @@ public class DebugNote {
 
 			@Override
 			public void componentShown(ComponentEvent e) {
-				LeftPane.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				lf.setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				
 				DebugNote.getSf().reSize();
 			}
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				LeftPane.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				lf.setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				sf.setPreferredSize(new Dimension(mFrm.getWidth(), mFrm.getHeight() / 20 ));
 				
 				DebugNote.getSf().reSize();
@@ -185,14 +183,14 @@ public class DebugNote {
 
 			@Override
 			public void componentMoved(ComponentEvent e) {
-				LeftPane.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				lf.setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				
 				DebugNote.getSf().reSize();
 			}
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
-				LeftPane.getLeftPane().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				lf.setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				
 				DebugNote.getSf().reSize();
 			}
@@ -201,14 +199,14 @@ public class DebugNote {
 		// 添加窗口调整大小触发器
 		mFrm.addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		headPane.getTitle().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
-		mf.getLeftPane().getViewport().getView().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
-		mf.getjComboBox().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
+		lf.getFileList().getLeftPane().getViewport().getView().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
+		lf.getFileList().getjComboBox().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		text.getTextlist().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		//--------------------------------------------------------------------------------------------------
 		mFrm.addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
 		headPane.getTitle().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
-		mf.getLeftPane().getViewport().getView().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
-		mf.getjComboBox().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
+		lf.getFileList().getLeftPane().getViewport().getView().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
+		lf.getFileList().getjComboBox().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
 		text.getTextlist().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
 		//--------------------------------------------------------------------------------------------------
 		app.add(mFrm);

@@ -38,7 +38,7 @@ public class StyleForm extends JPanel {
 	private static SimpleAttributeSet defaultStyle = new SimpleAttributeSet();
 
 	public StyleForm() {
-		this.setPreferredSize(new Dimension(LeftPane.WIDTH, LeftPane.HEIGHT / 20*3));
+		this.setPreferredSize(new Dimension(FilePane.WIDTH, FilePane.HEIGHT / 20*3));
 		this.setLayout(new GridLayout(1, 5));
 		init();
 	}
@@ -49,7 +49,7 @@ public class StyleForm extends JPanel {
 		inputStyle.setBackground(Color.white);
 		inputStyle.setForeground(Color.black);
 		inputStyle.setBounds(DebugNote.getmFrm().getWidth() / 20 * 17, 0, DebugNote.getmFrm().getWidth() / 20 * 3,
-				LeftPane.HEIGHT / 20);
+				FilePane.HEIGHT / 20);
 		this.add(inputStyle);
 		initStyle();
 		stylePanel.setLayout(new GridLayout(5, 5));

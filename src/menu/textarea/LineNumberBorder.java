@@ -13,8 +13,6 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 
 import app.DebugNote;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 import main.StyleForm;
 import main.TextArea;
 

@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import main.FrmHead;
-import main.LeftPane;
+import main.FilePane;
 import utils.ListSort;
 
 public class OpenFrm extends JFrame{
@@ -38,8 +38,8 @@ public class OpenFrm extends JFrame{
 				String path = file.getPath();
 				if (ListSort.findPathInPathList(file.getName())==null) {
 					ListSort.allPathAdd(path);
-					LeftPane.updateFullPathList();
-					LeftPane.updateHeadList();
+					FilePane.updateFullPathList();
+					FilePane.updateHeadList();
 					
 				}
 				mFrm.setVisible(false);

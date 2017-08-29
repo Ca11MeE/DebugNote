@@ -14,7 +14,7 @@ import javax.swing.text.DefaultStyledDocument;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
-import main.LeftPane;
+import main.FilePane;
 import main.TextArea;
 
 
@@ -22,7 +22,7 @@ public class FileReader {
 	//文件类型常量
 	public static final int DBN_TYPE=0;
 	public static final int TXT_TYPE=1;
-	private static String path=(LeftPane.uriString==null || "".equals(LeftPane.uriString))?"~/":LeftPane.uriString;
+	private static String path=(FilePane.uriString==null || "".equals(FilePane.uriString))?"~/":FilePane.uriString;
 	
 	/**
 	 * 根据文件后缀名获取文件列表
@@ -126,7 +126,7 @@ public class FileReader {
 			//写出最终文件流
 			OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(target), "utf-8");
 			//获取模板文件
-			File example = new File(LeftPane.class.getClassLoader().getResource("txt.xml").getPath());
+			File example = new File(FilePane.class.getClassLoader().getResource("txt.xml").getPath());
 			//写入模板流
 			InputStreamReader input = new InputStreamReader(new FileInputStream(example), "utf-8");
 			//将模板写出到被创建的文件中

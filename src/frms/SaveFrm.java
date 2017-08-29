@@ -30,7 +30,6 @@ import javax.swing.JTextArea;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import javafx.scene.input.KeyCode;
 import main.FrmHead;
 import main.TextArea;
 import utils.FileReader;
