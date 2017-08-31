@@ -1,4 +1,4 @@
-package main;
+package main.left;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -58,7 +58,7 @@ public class FilePane extends JPanel {
 		fullPathList = new JList<String>();
 
 		headList = new JList<String>(ListSort.fileTypeFilter(fullPathList));
-		leftPane = new JScrollPane(headList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+		leftPane = new JScrollPane(headList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// headList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// 批量读取文件夹中文件并放入

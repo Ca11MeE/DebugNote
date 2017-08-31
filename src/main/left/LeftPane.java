@@ -1,26 +1,38 @@
-package main;
+package main.left;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import org.apache.poi.openxml4j.opc.PackagePartName;
+
 public class LeftPane extends JPanel {
 
+	//文件栏
 	private static FilePane fileList = new FilePane();
+	
+	//分栏窗口
 	private static JTabbedPane tabs;
+	//面板隐藏按钮
 	private static JLabel hideJLabel = new JLabel("<");
+	//面板显示按钮
 	private static JLabel showJLabel = new JLabel(">");
-	private static JPanel
+	//分栏面板
+	private static JPanel filePanel=new JPanel();
 
 	public LeftPane(int tabPosition) {
 		tabs = new JTabbedPane(tabPosition);
 		tabs.addTab("文件", fileList);
+		filePanel.setLayout(new BorderLayout());
+		filePanel.add(tabs,BorderLayout.CENTER);
 		
 		// 初始化隐藏文件栏标签标签
 		hideJLabel.setBackground(Color.red);
@@ -34,15 +46,12 @@ public class LeftPane extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Component[] components = e.getComponent().getParent().getComponents();
-				for (Component component : components) {
-
-					component.setVisible(false);
-				}
-				tabs.setVisible(false);
+				LeftPane parent = (LeftPane) e.getComponent().getParent();
+				filePanel.setVisible(false);
 				showJLabel.setVisible(true);
-				e.getComponent().getParent().add(showJLabel, BorderLayout.EAST);
-				e.getComponent().getParent().remove(hideJLabel);
+				parent.add(showJLabel,BorderLayout.EAST);
+				parent.remove(hideJLabel);
+				parent.updateUI();
 			}
 
 		});
@@ -51,25 +60,29 @@ public class LeftPane extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Component[] components = e.getComponent().getParent().getComponents();
-				for (Component component : components) {
-					component.setVisible(true);
-				}
-				tabs.setVisible(true);
+				LeftPane parent = (LeftPane) e.getComponent().getParent();
+				filePanel.setVisible(true);
 				hideJLabel.setVisible(true);
-				e.getComponent().getParent().add(hideJLabel, BorderLayout.EAST);
-				e.getComponent().getParent().remove(showJLabel);
+				parent.add(hideJLabel, BorderLayout.EAST);
+				parent.remove(showJLabel);
+				parent.updateUI();
 			}
 
 		});
+		this.setOpaque(true);
+		this.setBackground(Color.black);
 		this.setLayout(new BorderLayout());
-		this.add(tabs, BorderLayout.CENTER);
+		this.add(filePanel, BorderLayout.CENTER);
 		this.add(showJLabel, BorderLayout.EAST);
 		this.add(hideJLabel, BorderLayout.EAST);
 	}
 
 	public static FilePane getFileList() {
 		return fileList;
+	}
+	
+	public static JLabel getShowJLabel() {
+		return showJLabel;
 	}
 
 }

@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import main.FilePane;
+import main.left.FilePane;
 import main.TextArea;
 
 public class MainMenu extends JPopupMenu {

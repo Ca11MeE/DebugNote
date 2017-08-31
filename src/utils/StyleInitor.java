@@ -22,7 +22,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import app.DebugNote;
-import main.FilePane;
+import main.left.FilePane;
 import main.StyleForm;
 
 /**

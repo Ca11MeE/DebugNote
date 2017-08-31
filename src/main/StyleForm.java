@@ -25,6 +25,7 @@ import javax.swing.text.StyleConstants;
 import org.junit.Test;
 
 import app.DebugNote;
+import main.left.FilePane;
 import menu.style.Opt4OpenStyXML;
 import utils.StyleInitor;
 

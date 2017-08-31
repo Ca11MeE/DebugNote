@@ -8,8 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import main.FrmHead;
-import main.FilePane;
+import main.head.FrmHead;
+import main.left.FilePane;
 import utils.ListSort;
 
 public class OpenFrm extends JFrame{

@@ -1,4 +1,4 @@
-package main;
+package main.head;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout.Constraints;
 
+import main.TextArea;
 import sun.net.www.content.text.plain;
 
 public class FrmHead extends JPanel {

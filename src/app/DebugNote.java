@@ -13,9 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import main.FilePane;
-import main.Head;
-import main.LeftPane;
+import main.left.FilePane;
+import main.head.Head;
+import main.left.LeftPane;
 import main.StyleForm;
 import main.TextArea;
 
@@ -154,7 +154,7 @@ public class DebugNote {
 		sf.setPreferredSize(new Dimension(WIDTH, HEIGHT / 20));
 		sf.setVisible(false);
 
-		lf.setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
+		lf.getFileList().setPreferredSize(new Dimension(WIDTH / 6, HEIGHT / 20 * 18));
 
 		mFrm.add(headPane, BorderLayout.NORTH);
 		mFrm.add(sf, BorderLayout.SOUTH);
@@ -168,14 +168,14 @@ public class DebugNote {
 
 			@Override
 			public void componentShown(ComponentEvent e) {
-				lf.setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				lf.getFileList().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				
 				DebugNote.getSf().reSize();
 			}
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				lf.setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				lf.getFileList().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				sf.setPreferredSize(new Dimension(mFrm.getWidth(), mFrm.getHeight() / 20 ));
 				
 				DebugNote.getSf().reSize();
@@ -183,14 +183,14 @@ public class DebugNote {
 
 			@Override
 			public void componentMoved(ComponentEvent e) {
-				lf.setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				lf.getFileList().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				
 				DebugNote.getSf().reSize();
 			}
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
-				lf.setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
+				lf.getFileList().setPreferredSize(new Dimension(mFrm.getWidth() / 6, mFrm.getHeight() / 20 * 18));
 				
 				DebugNote.getSf().reSize();
 			}
@@ -201,12 +201,14 @@ public class DebugNote {
 		headPane.getTitle().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		lf.getFileList().getLeftPane().getViewport().getView().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		lf.getFileList().getjComboBox().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
+		lf.getShowJLabel().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		text.getTextlist().addMouseMotionListener(DebugNote.getFrmSizeAdapter());
 		//--------------------------------------------------------------------------------------------------
 		mFrm.addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
 		headPane.getTitle().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
 		lf.getFileList().getLeftPane().getViewport().getView().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
 		lf.getFileList().getjComboBox().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
+		lf.getShowJLabel().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
 		text.getTextlist().addMouseListener(DebugNote.getFrmSizeAdapter4Mouse());
 		//--------------------------------------------------------------------------------------------------
 		app.add(mFrm);

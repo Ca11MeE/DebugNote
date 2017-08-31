@@ -1,4 +1,4 @@
-package main;
+package main.head;
 
 import java.awt.Color;
 import java.awt.GraphicsConfiguration;
@@ -21,6 +21,8 @@ import javax.swing.SwingConstants;
 import app.DebugNote;
 import frms.CreateFrm;
 import frms.OpenFrm;
+import main.TextArea;
+import main.left.FilePane;
 import menu.textarea.TextAreaMenu;
 
 public class Head extends JPanel {

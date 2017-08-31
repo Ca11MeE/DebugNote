@@ -30,7 +30,7 @@ import javax.swing.JTextArea;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import main.FrmHead;
+import main.head.FrmHead;
 import main.TextArea;
 import utils.FileReader;
 

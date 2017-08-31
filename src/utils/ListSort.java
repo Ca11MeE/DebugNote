@@ -8,7 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.ListModel;
 
-import main.FilePane;
+import main.left.FilePane;
 
 public class ListSort {
 	private static DefaultListModel<String> allPath= new DefaultListModel<String>();

@@ -10,8 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import app.DebugNote;
-import main.FrmHead;
-import main.FilePane;
+import main.head.FrmHead;
+import main.left.FilePane;
 import utils.FileReader;
 import utils.ListSort;
 

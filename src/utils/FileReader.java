@@ -14,7 +14,7 @@ import javax.swing.text.DefaultStyledDocument;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
-import main.FilePane;
+import main.left.FilePane;
 import main.TextArea;
 
 

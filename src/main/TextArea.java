@@ -37,6 +37,7 @@ import com.sun.org.apache.bcel.internal.classfile.LineNumber;
 import app.DebugNote;
 import frms.CreateFrm;
 import frms.SaveFrm;
+import main.head.Head;
 import menu.head.MainMenu;
 import menu.style.Opt4OpenStyXML;
 import menu.textarea.LineBar;
