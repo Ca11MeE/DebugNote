@@ -103,6 +103,7 @@ public class FilePane extends JPanel {
 		// jComboBox.addItem("*.exe");
 		jComboBox.addItem("*.html");
 		jComboBox.addItem("*.xml");
+		jComboBox.addItem("*.doc");
 		// jComboBox.addItem("*.class");
 		// jComboBox.addItem("*.css");
 		// jComboBox.addItem("*.java");

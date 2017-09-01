@@ -220,6 +220,7 @@ public class SaveFrm extends JFrame {
 				break;
 			case "xml":
 				saveAsTXT(file.getPath());
+				//如果是样式文件则刷新样式文件
 				if (headFilePath.equals(StyleInitor.getStyconfFile().getPath())) {
 					DebugNote.getSf().initStyle();
 				}

@@ -42,6 +42,7 @@ import main.TextArea;
  * 
  *
  */
+@Deprecated
 public class LineBar extends JComponent {  
 	  
     private final  Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 13);  

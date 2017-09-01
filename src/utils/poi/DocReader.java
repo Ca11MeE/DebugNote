@@ -16,14 +16,10 @@ import org.junit.Test;
  */
 public class DocReader {
 	
-	@Test
-	public  void test() throws FileNotFoundException, IOException {
-		WordExtractor doc =new WordExtractor(new FileInputStream(new File("/Users/keliyi/Documents/1.doc")));
-		String[] text = doc.getParagraphText();
-		int i=1;
-		for (String string : text) {
-			System.out.print("段落"+i+"："+string);
-			i++;
-		}
+	
+	public static String[] readDoc(File file) throws FileNotFoundException, IOException {
+		WordExtractor doc =new WordExtractor(new FileInputStream(file));
+		return doc.getParagraphText();
+		
 	}
 }

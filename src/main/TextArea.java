@@ -33,6 +33,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
 
 import org.junit.Test;
 
@@ -49,6 +50,7 @@ import menu.textarea.LineBarMenu;
 import menu.textarea.LineNumberBorder;
 import menu.textarea.TextAreaMenu;
 import utils.StyleInitor;
+import utils.poi.DocReader;
 
 public class TextArea {
 
@@ -56,7 +58,17 @@ public class TextArea {
 	private JScrollPane textlist;
 	private DefaultStyledDocument dtext;
 	// 该文本默认样式
-	private SimpleAttributeSet defAttr = StyleForm.getDefaultStyle();
+	private SimpleAttributeSet selectAttr = StyleForm.getDefaultStyle();
+	private SimpleAttributeSet defAttr = StyleInitor.getDefaultAttr();
+	
+	// 定义xml标签内文字样式
+	// 开始标签样式
+	private SimpleAttributeSet xmlLabelAttr = new SimpleAttributeSet();
+	// 结束标签样式
+	private SimpleAttributeSet xmlLabelEndAttr = new SimpleAttributeSet();
+	//注释标签样式
+	private SimpleAttributeSet xmlDiscriptionAttr = new SimpleAttributeSet();
+
 	// 输入字符缓冲区
 	private char[] inCBuffer = new char[4];
 	// 样式标签开关
@@ -68,13 +80,11 @@ public class TextArea {
 	private static int y = 0;
 	// 保存垂直滚动条对象
 	private static JScrollBar verticalScrollBar;
-	private static LineBar lineBar=new LineBar();
 
 	public JScrollPane getTextlist() {
 		return textlist;
 	}
 
-	
 	/**
 	 * 
 	 */
@@ -84,8 +94,8 @@ public class TextArea {
 		textlist = new JScrollPane(jtp, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-		//textlist.setRowHeaderView(lineBar);
-		
+		// textlist.setRowHeaderView(lineBar);
+
 		verticalScrollBar = textlist.getVerticalScrollBar();
 
 		verticalScrollBar.addMouseListener(new MouseAdapter() {
@@ -110,15 +120,16 @@ public class TextArea {
 		jtp.addKeyListener(new KeyAdapter() {
 
 			public void keyTyped(KeyEvent e) {
-//				jtp.setBorder(LineNumberBorder.getMainBar());
-//				String[] splits=TextArea.getJTP().getText().split("\\n");
-//				for (String string : splits) {
-//					float height = jtp.getFontMetrics(jtp.getFont()).getLineMetrics(string,jtp.getGraphics()).getHeight();
-//					System.out.println(height);
-//				}
-//				
-				if (defAttr != StyleForm.getDefaultStyle()) {
-					defAttr = StyleForm.getDefaultStyle();
+				// jtp.setBorder(LineNumberBorder.getMainBar());
+				// String[] splits=TextArea.getJTP().getText().split("\\n");
+				// for (String string : splits) {
+				// float height =
+				// jtp.getFontMetrics(jtp.getFont()).getLineMetrics(string,jtp.getGraphics()).getHeight();
+				// System.out.println(height);
+				// }
+				//
+				if (selectAttr != StyleForm.getDefaultStyle()) {
+					selectAttr = StyleForm.getDefaultStyle();
 				}
 				/*
 				 * 先取消标签换样式功能
@@ -170,9 +181,13 @@ public class TextArea {
 				 * }
 				 */
 
-				StyleForm.showBuffer(inCBuffer, defAttr);
+				StyleForm.showBuffer(inCBuffer, null);
 				// 设定文本样式
-				jtp.setCharacterAttributes(defAttr, true);
+				if (inMarkEnd) {
+					
+				}
+				
+				jtp.setCharacterAttributes(selectAttr, true);
 			}
 
 		});
@@ -199,15 +214,14 @@ public class TextArea {
 
 					TextAreaMenu.getMenu().addStyles();
 					TextAreaMenu.getMenu().setVisible(true);
-					
+
 				} else {
 					TextAreaMenu.getMenu().setVisible(false);
 				}
 			}
 
 		});
-		
-		
+
 	}
 
 	public void read(File file) throws IOException, BadLocationException, ClassNotFoundException {
@@ -242,121 +256,193 @@ public class TextArea {
 		boolean endMark = false;
 		boolean mark = false;
 		/*
-		 * 20170811待解决 .dbn文件读取
-		 * 已解决
+		 * 20170811待解决 .dbn文件读取 已解决
 		 */
-			// 根据下拉框选择的文件后缀读取文件
-			switch (file.getPath().substring(file.getPath().lastIndexOf('.'))) {
+		// 根据下拉框选择的文件后缀读取文件
+		switch (file.getPath().substring(file.getPath().lastIndexOf('.'))) {
 
-			// txt后缀
-			case ".txt":
-				
-				InputStreamReader input = new InputStreamReader(new FileInputStream(file), "utf-8");
-				char[] readC = new char[1];
-				while (input.read(readC) != -1) {
-					char c = readC[0];
+		// txt后缀
+		case ".txt":
+			
+			InputStreamReader input = new InputStreamReader(new FileInputStream(file), "utf-8");
+			char[] readC = new char[1];
+			while (input.read(readC) != -1) {
+				char c = readC[0];
 
-					/*
-					 * 
-					 * if (file.getAbsolutePath().endsWith(".txt")) {
-					 * 
-					 * 先取消标签换样式功能
-					 * 
-					 * switch (markCount) { case 0: if (c == '<') { bufferC[index] = c; index++;
-					 * mark = true; markCount++; continue; } else { mark = false; markCount = 0; }
-					 * break; case 1: if (mark && c == '!') { bufferC[index] = c; index++;
-					 * markCount++; continue; } else { mark = false; markCount = 0; } break; case 2:
-					 * if (mark && c == '+') { bufferC[index] = c; index++; endMark = false;
-					 * markCount++; continue; } else if (mark && c == '-') { bufferC[index] = c;
-					 * index++; endMark = true; markCount++; continue; } else { mark = false;
-					 * markCount = 0; } break; case 3: if (mark && c == '>') { bufferC[index] = c;
-					 * if (endMark) {
-					 * 
-					 * defAttr = attr1; } else { defAttr = attr2; } mark = false; markCount = 0; //
-					 * 清空缓冲区 bufferC = new char[1024]; index = 0; continue; } else { mark = false;
-					 * markCount = 0; // 打印缓冲区字符 String buffStr = new String(bufferC);
-					 * dtext.insertString(dtext.getLength(), buffStr, defAttr); // 重置指针 index = 0;
-					 * continue; } }
-					 * 
-					 * 
-					 * 
-					 * 
-					 * }
-					 */
-					String readString = new String(readC);
+				/*
+				 * 
+				 * if (file.getAbsolutePath().endsWith(".txt")) {
+				 * 
+				 * 先取消标签换样式功能
+				 * 
+				 * switch (markCount) { case 0: if (c == '<') { bufferC[index] = c; index++;
+				 * mark = true; markCount++; continue; } else { mark = false; markCount = 0; }
+				 * break; case 1: if (mark && c == '!') { bufferC[index] = c; index++;
+				 * markCount++; continue; } else { mark = false; markCount = 0; } break; case 2:
+				 * if (mark && c == '+') { bufferC[index] = c; index++; endMark = false;
+				 * markCount++; continue; } else if (mark && c == '-') { bufferC[index] = c;
+				 * index++; endMark = true; markCount++; continue; } else { mark = false;
+				 * markCount = 0; } break; case 3: if (mark && c == '>') { bufferC[index] = c;
+				 * if (endMark) {
+				 * 
+				 * defAttr = attr1; } else { defAttr = attr2; } mark = false; markCount = 0; //
+				 * 清空缓冲区 bufferC = new char[1024]; index = 0; continue; } else { mark = false;
+				 * markCount = 0; // 打印缓冲区字符 String buffStr = new String(bufferC);
+				 * dtext.insertString(dtext.getLength(), buffStr, defAttr); // 重置指针 index = 0;
+				 * continue; } }
+				 * 
+				 * 
+				 * 
+				 * 
+				 * }
+				 */
+				String readString = new String(readC);
 
-					// 将流读入数据写入文档对象中
-					dtext.insertString(dtext.getLength(), readString, null);
-				}
-				
-				
-				//添加行号条
-				jtp.setBorder(LineNumberBorder.getMainBar());
-				
-				//不显示样式面板
-				DebugNote.getSf().setVisible(false);
-				
-				break;
-			case ".dbn":
-				FileInputStream fis = new FileInputStream(file);
-				ObjectInputStream objIn = new ObjectInputStream(fis);
-				dtext = (DefaultStyledDocument) objIn.readObject();
-				
-				//取消显示行号条
-				jtp.setBorder(null);
-				//显示样式窗口
-				DebugNote.getSf().setVisible(true);
-				break;
-
-			default:
-				InputStreamReader defInput = new InputStreamReader(new FileInputStream(file), "utf-8");
-				char[] defReadC = new char[1];
-				while (defInput.read(defReadC) != -1) {
-					char c = defReadC[0];
-					String readString = new String(defReadC);
-					// 将流读入数据写入文档对象中
-					dtext.insertString(dtext.getLength(), readString, null);
-				}
-				
-				//添加行行号条
-				jtp.setBorder(LineNumberBorder.getMainBar());
-				//不显示样式窗口
-				DebugNote.getSf().setVisible(false);
-				break;
+				// 将流读入数据写入文档对象中
+				dtext.insertString(dtext.getLength(), readString, defAttr);
 			}
 
-			/*
-			 * 已过期代码,存在缺陷
-			 * 
-			 * 
-			 *
-			 * //检测开始标识符 if (readString.contains("<!+>")) { int start =
-			 * readString.indexOf("<!+>"); String forwardString = readString.substring(0,
-			 * start); String behindString = readString.substring(start + 4);
-			 * 
-			 * // 将标识符前的字符串写入文档 dtext.insertString(dtext.getLength(), forwardString,
-			 * defAttr); // 将标识符后的字符写入文档 dtext.insertString(dtext.getLength(), behindString,
-			 * attr1); defAttr=attr1; continue; }
-			 * 
-			 * //检测结束标识符 if (readString.contains("<!->")) { int start =
-			 * readString.indexOf("<!->"); String forwardString = readString.substring(0,
-			 * start); String behindString = readString.substring(start + 4);
-			 * 
-			 * // 将标识符前的字符串写入文档 dtext.insertString(dtext.getLength(), forwardString,
-			 * defAttr); // 将标识符后的字符写入文档 dtext.insertString(dtext.getLength(), behindString,
-			 * attr); defAttr=attr; continue; }
-			 * 
-			 */
+			// 添加行号条
+			jtp.setBorder(LineNumberBorder.getMainBar());
 
-			// text.append(new String(bs,"utf-8"));
+			// 不显示样式面板
+			DebugNote.getSf().setVisible(false);
 
-			// jtp.setContentType("text/html;charset=utf-8");
-			// jtp.setPage(new File("c:/1.html").toURL());\
+			break;
+		case ".dbn":
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream objIn = new ObjectInputStream(fis);
+			dtext = (DefaultStyledDocument) objIn.readObject();
 
-			// dtext=(DefaultStyledDocument)text.getDocument();
+			// 取消显示行号条
+			jtp.setBorder(null);
+			// 显示样式窗口
+			DebugNote.getSf().setVisible(true);
+			break;
 
-			jtp.setDocument(dtext);
-		
+		case ".xml":
+			// xml文件读取
+			StyleConstants.setForeground(xmlLabelAttr, Color.BLUE);
+			StyleConstants.setForeground(xmlLabelEndAttr, Color.RED);
+			StyleConstants.setForeground(xmlDiscriptionAttr, Color.GRAY);
+			InputStreamReader xmlInput = new InputStreamReader(new FileInputStream(file), "utf-8");
+			char[] xmlReadC = new char[1];
+			//注释计数器
+			int disCount=0,disEndCount=0;
+			//注释开关
+			boolean disFlag=false;
+			SimpleAttributeSet insertStyle = defAttr;
+			while (xmlInput.read(xmlReadC) != -1) {
+				String readString = new String(xmlReadC);
+				// 判断标签开始或结束
+				switch (readString) {
+				case "<":
+					dtext.insertString(dtext.getLength(), readString, insertStyle);
+					insertStyle = xmlLabelAttr;
+					break;
+				case ">":
+					insertStyle = defAttr;
+					dtext.insertString(dtext.getLength(), readString, insertStyle);
+					disEndCount++;
+					break;
+				case "/":
+					insertStyle = xmlLabelEndAttr;
+					dtext.insertString(dtext.getLength(), readString, insertStyle);
+					insertStyle = xmlLabelAttr;
+					break;
+				case "!":
+					disCount++;
+					dtext.insertString(dtext.getLength(), readString, insertStyle);
+					break;
+				case "-":
+					if (disCount>0) {
+						disCount++;
+					}
+					disEndCount++;
+					dtext.insertString(dtext.getLength(), readString, insertStyle);
+					break;
+				default:
+					if (3==disCount) {
+						insertStyle=xmlDiscriptionAttr;
+						disCount=0;
+						disFlag=true;
+					}else {
+						if (3==disEndCount) {
+							insertStyle=defAttr;
+							disEndCount=0;
+							disFlag=false;
+						}
+						if (disFlag) {
+							insertStyle=xmlDiscriptionAttr;
+						}
+						disCount=0;
+						disEndCount=0;
+					}
+					dtext.insertString(dtext.getLength(), readString, insertStyle);
+					break;
+				}
+			}
+
+			// 添加行行号条
+			jtp.setBorder(LineNumberBorder.getMainBar());
+			// 不显示样式窗口
+			DebugNote.getSf().setVisible(false);
+			break;
+		case ".doc":
+			// doc文件读取
+			String[] readDoc = DocReader.readDoc(file);
+			for (String string : readDoc) {
+				dtext.insertString(dtext.getLength(), string, null);
+			}
+			break;
+		default:
+			InputStreamReader defInput = new InputStreamReader(new FileInputStream(file), "utf-8");
+			char[] defReadC = new char[1];
+			while (defInput.read(defReadC) != -1) {
+				char c = defReadC[0];
+				String readString = new String(defReadC);
+				// 将流读入数据写入文档对象中
+				dtext.insertString(dtext.getLength(), readString, null);
+			}
+
+			// 添加行行号条
+			jtp.setBorder(LineNumberBorder.getMainBar());
+			// 不显示样式窗口
+			DebugNote.getSf().setVisible(false);
+			break;
+		}
+
+		/*
+		 * 已过期代码,存在缺陷
+		 * 
+		 * 
+		 *
+		 * //检测开始标识符 if (readString.contains("<!+>")) { int start =
+		 * readString.indexOf("<!+>"); String forwardString = readString.substring(0,
+		 * start); String behindString = readString.substring(start + 4);
+		 * 
+		 * // 将标识符前的字符串写入文档 dtext.insertString(dtext.getLength(), forwardString,
+		 * defAttr); // 将标识符后的字符写入文档 dtext.insertString(dtext.getLength(), behindString,
+		 * attr1); defAttr=attr1; continue; }
+		 * 
+		 * //检测结束标识符 if (readString.contains("<!->")) { int start =
+		 * readString.indexOf("<!->"); String forwardString = readString.substring(0,
+		 * start); String behindString = readString.substring(start + 4);
+		 * 
+		 * // 将标识符前的字符串写入文档 dtext.insertString(dtext.getLength(), forwardString,
+		 * defAttr); // 将标识符后的字符写入文档 dtext.insertString(dtext.getLength(), behindString,
+		 * attr); defAttr=attr; continue; }
+		 * 
+		 */
+
+		// text.append(new String(bs,"utf-8"));
+
+		// jtp.setContentType("text/html;charset=utf-8");
+		// jtp.setPage(new File("c:/1.html").toURL());\
+
+		// dtext=(DefaultStyledDocument)text.getDocument();
+
+		jtp.setDocument(dtext);
 
 	}
 
@@ -438,7 +524,7 @@ public class TextArea {
 		// String selectedText = jtp.getSelectedText();
 		jtp.setCharacterAttributes(StyleForm.getDefaultStyle(), true);
 	}
-	
+
 	public static void changeSelectedStyle(SimpleAttributeSet attr) {
 		// String selectedText = jtp.getSelectedText();
 		jtp.setCharacterAttributes(attr, true);

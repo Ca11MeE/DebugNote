@@ -3,6 +3,7 @@ package menu.textarea;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.Arrays;
@@ -11,17 +12,28 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.text.StyleConstants;
 
 import app.DebugNote;
 import main.StyleForm;
 import main.TextArea;
+import utils.StyleInitor;
 
 public class LineNumberBorder extends LineBorder {
 
+	明天任务，完成行号条根据默认字号设定宽高
+	
 	private static final Component JTextPane = TextArea.getJTP();
 	private static LineNumberBorder mainBar = new LineNumberBorder(Color.red);
+	private static Font initFont;
 	private int borderWidth;
 
+	static {
+		int fontSize = StyleConstants.getFontSize(StyleInitor.getDefaultAttr());
+		initFont=new Font("微软雅黑", Font.PLAIN, fontSize);
+		System.out.println(fontSize);
+	}
+	
 	private LineNumberBorder(Color color) {
 		super(color);
 	}
@@ -43,9 +55,10 @@ public class LineNumberBorder extends LineBorder {
 	public Insets getBorderInsets(Component c, Insets insets) {
 		if (c instanceof JTextPane) {
 			// 这里设置行号左边边距
-			borderWidth=TextArea.getJTP().getFontMetrics(StyleForm.getStyles().get(0).getFont()).stringWidth(StyleForm.getStyles().get(0).getText().substring(0,1)) * 4+3;
+			borderWidth=16*4+3;
+					//TextArea.getJTP().getFontMetrics(initFont).stringWidth("a") * 4+3;
 					//TextArea.getJTP().getFontMetrics(StyleForm.getStyles().get(0).getFont()).stringWidth(StyleForm.getStyles().get(0).getText().substring(0,1)) * 4+3;
-			insets.left = borderWidth;
+			insets.left = borderWidth+5;
 		}
 
 		return insets;
@@ -61,8 +74,8 @@ public class LineNumberBorder extends LineBorder {
 	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
 		// 获得当前剪贴区域的边界矩形。
 		java.awt.Rectangle clip = g.getClipBounds();
-		FontMetrics fm = TextArea.getJTP().getFontMetrics(StyleForm.getInputStyle().getFont());
-		g.setFont(StyleForm.getStyles().get(0).getFont());
+		FontMetrics fm = TextArea.getJTP().getFontMetrics(initFont);
+		g.setFont(initFont);
 		/**
 		 * 
 		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -101,7 +114,7 @@ public class LineNumberBorder extends LineBorder {
 			g.setColor(JTextPane.getBackground().darker());
 			g.fill3DRect(0, ybaseline+fm.getDescent(), borderWidth, fontHeight+fm.getDescent(), true);
 			g.setColor(TextArea.getJTP().getForeground());
-			g.setFont(StyleForm.getStyles().get(0).getFont());
+			g.setFont(initFont);
 			g.drawString(label, 0, ybaseline);
 			ybaseline += fontHeight;
 			startingLineNumber++;

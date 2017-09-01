@@ -90,4 +90,5 @@
 	<TextStyle name="defattr" FontSize="12" Foreground="black" FontFamily="微软雅黑"/>
 	<TextStyle name="attr1" FontSize="20" Foreground="red" FontFamily="微软雅黑"/>
 	<TextStyle name="attr2" FontSize="10" Foreground="blue" FontFamily="微软雅黑" Background="green"/>
+	<TextStyle name="标题" FontSize="25" Foreground="orange" FontFamily="微软雅黑" />
 </Style>

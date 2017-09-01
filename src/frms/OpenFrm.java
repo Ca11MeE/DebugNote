@@ -18,6 +18,8 @@ public class OpenFrm extends JFrame{
 	private static FrmHead frmHead = new FrmHead(mFrm);
 	private static FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("TXT File", "txt");
 	private static FileNameExtensionFilter dbnFilter = new FileNameExtensionFilter("DBN File", "dbn");
+	private static FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML File", "xml");
+	private static FileNameExtensionFilter docFilter = new FileNameExtensionFilter("DOC File", "doc");
 	
 	static{
 		mFrm.setUndecorated(true);
@@ -53,6 +55,8 @@ public class OpenFrm extends JFrame{
 		openDialog.setAcceptAllFileFilterUsed(false);
 		openDialog.addChoosableFileFilter(dbnFilter);
 		openDialog.addChoosableFileFilter(txtFilter);
+		openDialog.addChoosableFileFilter(xmlFilter);
+		openDialog.addChoosableFileFilter(docFilter);
 //		openDialog.setFileFilter(txtFilter);
 		openDialog.setFileFilter(dbnFilter);
 		openDialog.setVisible(true);

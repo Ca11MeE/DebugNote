@@ -53,6 +53,18 @@ public class StyleInitor {
 	private static Boolean underline;
 	
 	private static File styconfFile=new File(FilePane.uriString+"styconf.xml");
+	
+	//默认样式（非样式文本的样式）目前只可以设置字体大小和字号
+	private static SimpleAttributeSet defaultAttr=new SimpleAttributeSet();
+	
+	static {
+		//初始化默认样式(可通过设置设置)
+		StyleConstants.setFontSize(defaultAttr, 16);
+		StyleConstants.setFontFamily(defaultAttr, "微软雅黑");
+		StyleConstants.setForeground(defaultAttr, Color.BLACK);
+		StyleConstants.setBackground(defaultAttr, Color.WHITE);
+		StyleConstants.setBold(defaultAttr, false);
+	}
 
 	public static Map<String,SimpleAttributeSet> getInitStyleList() {
 		// 返回的样式列表
@@ -479,6 +491,12 @@ public class StyleInitor {
 
 	public static File getStyconfFile() {
 		return styconfFile;
+	}
+
+	
+	
+	public static SimpleAttributeSet getDefaultAttr() {
+		return defaultAttr;
 	}
 
 	
