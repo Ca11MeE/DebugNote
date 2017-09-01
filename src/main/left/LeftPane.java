@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.apache.poi.openxml4j.opc.PackagePartName;
 
 public class LeftPane extends JPanel {
 

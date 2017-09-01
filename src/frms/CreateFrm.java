@@ -1,6 +1,8 @@
 package frms;
 
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -42,7 +44,13 @@ public class CreateFrm extends JFrame{
 			@Override
 			public void approveSelection() {
 				//新建文件并保存
-				String path = createDialog.getSelectedFile().getPath();
+				String path = createDialog.getSelectedFile().getPath().trim();
+//				String fileName=path.substring(path.lastIndexOf(File.separatorChar)+1);
+//				System.out.println(fileName);
+//				if ("".equals(path.trim())) {
+//					JOptionPane.showMessageDialog(mFrm, "文件名不能为空!!!!");
+//					return;
+//				}
 				File createFile =new File(path+"."+((FileNameExtensionFilter)createDialog.getFileFilter()).getExtensions()[0]);
 				//默认以dbn形式写出文件
 				int fileType=0;
@@ -95,17 +103,18 @@ public class CreateFrm extends JFrame{
 							//文本编辑框打开该文件
 							DebugNote.getText().read(createFile);
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(mFrm, e.getMessage());
+							JOptionPane.showMessageDialog(mFrm, "报错!!");
+							e.printStackTrace();
 						}
 					} catch (IOException e) {
-						
+						e.printStackTrace();
 					}
 					
 				}
 				
 				mFrm.setVisible(false);
 			}
-			
+
 			
 			
 		};
@@ -116,6 +125,7 @@ public class CreateFrm extends JFrame{
 		createDialog.addChoosableFileFilter(txtFilter);
 //		createDialog.setFileFilter(txtFilter);
 		createDialog.setFileFilter(dbnFilter);
+		createDialog.setApproveButtonText("新建");
 		createDialog.setVisible(true);
 		createDialog.setBounds(0,30,mFrm.getWidth(),mFrm.getHeight()-30);
 		

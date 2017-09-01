@@ -43,9 +43,9 @@ public class LineNumberBorder extends LineBorder {
 	public Insets getBorderInsets(Component c, Insets insets) {
 		if (c instanceof JTextPane) {
 			// 这里设置行号左边边距
-			insets.left = 40;
 			borderWidth=TextArea.getJTP().getFontMetrics(StyleForm.getStyles().get(0).getFont()).stringWidth(StyleForm.getStyles().get(0).getText().substring(0,1)) * 4+3;
 					//TextArea.getJTP().getFontMetrics(StyleForm.getStyles().get(0).getFont()).stringWidth(StyleForm.getStyles().get(0).getText().substring(0,1)) * 4+3;
+			insets.left = borderWidth;
 		}
 
 		return insets;

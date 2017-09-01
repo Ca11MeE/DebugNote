@@ -30,9 +30,11 @@ import javax.swing.JTextArea;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import app.DebugNote;
 import main.head.FrmHead;
 import main.TextArea;
 import utils.FileReader;
+import utils.StyleInitor;
 
 public class SaveFrm extends JFrame {
 
@@ -65,7 +67,7 @@ public class SaveFrm extends JFrame {
 							mFrm.setVisible(false);
 							return;
 						}
-					}else {
+					} else {
 						saveFile.createNewFile();
 					}
 					mFrm.saveBtnClick(saveFile);
@@ -107,17 +109,15 @@ public class SaveFrm extends JFrame {
 	/**
 	 * 无参txt格式保存 默认项目目录同级路径
 	 * 
-	 * public void saveAsTXT() { try { File fileData = new
-	 * File(MainFrm.uriString + fileName.getText() +
-	 * saveType.getSelectedItem().toString().substring(1)); if
-	 * (!fileData.exists()) { fileData.createNewFile(); } FileOutputStream file
-	 * = new FileOutputStream(fileData);
+	 * public void saveAsTXT() { try { File fileData = new File(MainFrm.uriString +
+	 * fileName.getText() + saveType.getSelectedItem().toString().substring(1)); if
+	 * (!fileData.exists()) { fileData.createNewFile(); } FileOutputStream file =
+	 * new FileOutputStream(fileData);
 	 * 
-	 * // 用字节流写出,暂时不能保存样式 OutputStreamWriter save = new
-	 * OutputStreamWriter(file); save.write(TextArea.getJTP().getText());
-	 * save.flush(); save.close(); } catch (FileNotFoundException e) { return; }
-	 * catch (IOException e) { JOptionPane.showMessageDialog(mFrm,
-	 * "文件保存出错!!!!!"); } }
+	 * // 用字节流写出,暂时不能保存样式 OutputStreamWriter save = new OutputStreamWriter(file);
+	 * save.write(TextArea.getJTP().getText()); save.flush(); save.close(); } catch
+	 * (FileNotFoundException e) { return; } catch (IOException e) {
+	 * JOptionPane.showMessageDialog(mFrm, "文件保存出错!!!!!"); } }
 	 * 
 	 */
 
@@ -150,17 +150,15 @@ public class SaveFrm extends JFrame {
 	/**
 	 * 无参dbn格式保存 默认项目目录同级路径
 	 * 
-	 * public void saveAsDBN() { try { File fileData = new
-	 * File(MainFrm.uriString + fileName.getText() +
-	 * saveType.getSelectedItem().toString().substring(1)); if
-	 * (!fileData.exists()) { fileData.createNewFile(); } FileOutputStream file
-	 * = new FileOutputStream(fileData);
+	 * public void saveAsDBN() { try { File fileData = new File(MainFrm.uriString +
+	 * fileName.getText() + saveType.getSelectedItem().toString().substring(1)); if
+	 * (!fileData.exists()) { fileData.createNewFile(); } FileOutputStream file =
+	 * new FileOutputStream(fileData);
 	 * 
 	 * ObjectOutputStream objOut = new ObjectOutputStream(file);
-	 * objOut.writeObject(TextArea.getJTP().getStyledDocument());
-	 * objOut.flush(); objOut.close(); } catch (FileNotFoundException e) {
-	 * return; } catch (IOException e) { JOptionPane.showMessageDialog(mFrm,
-	 * "文件保存出错!!!!!"); } }
+	 * objOut.writeObject(TextArea.getJTP().getStyledDocument()); objOut.flush();
+	 * objOut.close(); } catch (FileNotFoundException e) { return; } catch
+	 * (IOException e) { JOptionPane.showMessageDialog(mFrm, "文件保存出错!!!!!"); } }
 	 * 
 	 */
 
@@ -193,21 +191,41 @@ public class SaveFrm extends JFrame {
 		return mFrm;
 	}
 
+	// 存在bug:保存其他格式会误认为是dbn格式,逻辑存在问题
 	public void saveBtnClick(File file) {
 		String fileType = ((FileNameExtensionFilter) saveDialog.getFileFilter()).getExtensions()[0];
-		if (fileType != null && !"".equals(fileType)) {
-			switch (fileType) {
+		String headFilePath = DebugNote.getHeadPane().getTitle().getText();
+		String headFileType = headFilePath.substring(headFilePath.lastIndexOf('.') + 1);
+		if (fileType.equals(headFileType)) {
+			//后缀符合
+			if (fileType != null && !"".equals(fileType)) {
+				switch (fileType) {
+				case "txt":
+					saveAsTXT(file.getPath());
+					break;
+				case "dbn":
+					saveAsDBN(file.getPath());
+					break;
+				}
+			} else {
+				JOptionPane.showMessageDialog(mFrm, "不支持的文件保存格式");
+			}
+		}else {
+			switch (headFileType) {
 			case "txt":
 				saveAsTXT(file.getPath());
 				break;
 			case "dbn":
 				saveAsDBN(file.getPath());
 				break;
+			case "xml":
+				saveAsTXT(file.getPath());
+				if (headFilePath.equals(StyleInitor.getStyconfFile().getPath())) {
+					DebugNote.getSf().initStyle();
+				}
+				break;
 			}
-		} else {
-			JOptionPane.showMessageDialog(mFrm, "不支持的文件保存格式");
 		}
-		
 	}
 
 }

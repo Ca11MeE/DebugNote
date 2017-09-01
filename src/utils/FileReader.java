@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Vector;
 
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
@@ -98,8 +100,11 @@ public class FileReader {
 	 * 用文本编辑器根据文件路径读取文件
 	 * @param file	文件路径	
 	 * @param textArea	文本编辑器
+	 * @throws BadLocationException 
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void getData(File file,TextArea textArea){
+	public static void getData(File file,TextArea textArea) throws ClassNotFoundException, IOException, BadLocationException{
 			textArea.read(file);
 	}
 	
@@ -126,7 +131,7 @@ public class FileReader {
 			//写出最终文件流
 			OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(target), "utf-8");
 			//获取模板文件
-			File example = new File(FilePane.class.getClassLoader().getResource("txt.xml").getPath());
+			File example = new File(FilePane.uriString+"txt.xml");
 			//写入模板流
 			InputStreamReader input = new InputStreamReader(new FileInputStream(example), "utf-8");
 			//将模板写出到被创建的文件中

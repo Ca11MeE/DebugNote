@@ -12,8 +12,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.TextListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -26,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
@@ -206,7 +210,7 @@ public class TextArea {
 		
 	}
 
-	public void read(File file) {
+	public void read(File file) throws IOException, BadLocationException, ClassNotFoundException {
 
 		/*
 		 * 
@@ -241,13 +245,12 @@ public class TextArea {
 		 * 20170811待解决 .dbn文件读取
 		 * 已解决
 		 */
-		try {
-
 			// 根据下拉框选择的文件后缀读取文件
 			switch (file.getPath().substring(file.getPath().lastIndexOf('.'))) {
 
 			// txt后缀
 			case ".txt":
+				
 				InputStreamReader input = new InputStreamReader(new FileInputStream(file), "utf-8");
 				char[] readC = new char[1];
 				while (input.read(readC) != -1) {
@@ -353,9 +356,6 @@ public class TextArea {
 			// dtext=(DefaultStyledDocument)text.getDocument();
 
 			jtp.setDocument(dtext);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 
 	}

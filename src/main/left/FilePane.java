@@ -9,16 +9,19 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.BadLocationException;
 
 import app.DebugNote;
 import utils.FileReader;
@@ -138,7 +141,15 @@ public class FilePane extends JPanel {
 				if (headList.getSelectedValue() == null) {
 					return;
 				}
-				FileReader.getData(new File(uri), DebugNote.getText());
+				try {
+					FileReader.getData(new File(uri), DebugNote.getText());
+				} catch (ClassNotFoundException e1) {
+					JOptionPane.showMessageDialog(DebugNote.getmFrm(), "文件没有找到,请检查文件是否存在");
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(DebugNote.getmFrm(), "文件读取错误!!!!,文件可能已损坏,或文件名不合法");
+				} catch (BadLocationException e1) {
+					JOptionPane.showMessageDialog(DebugNote.getmFrm(), "文件格式错误或不支持");
+				}
 				DebugNote.getHeadPane().setLblText(uri);
 			}
 		});

@@ -4,11 +4,16 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.text.BadLocationException;
 
 import app.DebugNote;
+import main.left.FilePane;
+import utils.ListSort;
 import utils.StyleInitor;
 
 public class Opt4OpenStyXML extends JFrame{
@@ -28,8 +33,20 @@ public class Opt4OpenStyXML extends JFrame{
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DebugNote.getText().read(StyleInitor.getStyconfFile());
-				DebugNote.getHeadPane().setLblText(StyleInitor.getStyconfFile().getPath());
+				File styconfFile = StyleInitor.getStyconfFile();
+				try {
+					DebugNote.getText().read(styconfFile);
+				} catch (ClassNotFoundException e1) {
+				} catch (IOException e1) {
+				} catch (BadLocationException e1) {
+				}
+				if (ListSort.findPathInPathList(styconfFile.getName())==null) {
+					ListSort.allPathAdd(styconfFile.getPath());
+					FilePane.updateFullPathList();
+					FilePane.updateHeadList();
+					
+				}
+				DebugNote.getHeadPane().setLblText(styconfFile.getPath());
 				hideFrm();
 			}
 			
