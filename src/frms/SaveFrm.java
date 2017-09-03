@@ -40,7 +40,7 @@ public class SaveFrm extends JFrame {
 
 	private static JFileChooser saveDialog;
 	private static SaveFrm mFrm = new SaveFrm();
-	private static FrmHead frmHead = new FrmHead(mFrm);
+	private static FrmHead frmHead = new FrmHead(mFrm,"保存");
 	private static FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("TXT File", "txt");
 	private static FileNameExtensionFilter dbnFilter = new FileNameExtensionFilter("DBN File", "dbn");
 

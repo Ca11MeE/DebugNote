@@ -21,7 +21,7 @@ import utils.StyleInitor;
 
 public class LineNumberBorder extends LineBorder {
 
-	明天任务，完成行号条根据默认字号设定宽高
+	//明天任务，完成行号条根据默认字号设定宽高
 	
 	private static final Component JTextPane = TextArea.getJTP();
 	private static LineNumberBorder mainBar = new LineNumberBorder(Color.red);

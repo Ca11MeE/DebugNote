@@ -54,7 +54,7 @@ public class StyleInitor {
 	
 	private static File styconfFile=new File(FilePane.uriString+"styconf.xml");
 	
-	//默认样式（非样式文本的样式）目前只可以设置字体大小和字号
+	//默认样式（非样式文本的样式）
 	private static SimpleAttributeSet defaultAttr=new SimpleAttributeSet();
 	
 	static {

@@ -17,7 +17,7 @@ public class LeftPane extends JPanel {
 
 	//文件栏
 	private static FilePane fileList = new FilePane();
-	
+	private static FontPane fontSet=new FontPane();
 	//分栏窗口
 	private static JTabbedPane tabs;
 	//面板隐藏按钮
@@ -30,6 +30,7 @@ public class LeftPane extends JPanel {
 	public LeftPane(int tabPosition) {
 		tabs = new JTabbedPane(tabPosition);
 		tabs.addTab("文件", fileList);
+		tabs.addTab("字体", fontSet);
 		filePanel.setLayout(new BorderLayout());
 		filePanel.add(tabs,BorderLayout.CENTER);
 		

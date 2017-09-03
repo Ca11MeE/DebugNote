@@ -15,7 +15,7 @@ import utils.ListSort;
 public class OpenFrm extends JFrame{
 	private static OpenFrm mFrm=new OpenFrm();
 	private static JFileChooser openDialog;
-	private static FrmHead frmHead = new FrmHead(mFrm);
+	private static FrmHead frmHead = new FrmHead(mFrm,"打开文件");
 	private static FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("TXT File", "txt");
 	private static FileNameExtensionFilter dbnFilter = new FileNameExtensionFilter("DBN File", "dbn");
 	private static FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML File", "xml");

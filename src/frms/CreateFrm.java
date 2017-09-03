@@ -21,7 +21,7 @@ public class CreateFrm extends JFrame{
 	
 	private static JFileChooser createDialog;
 	private static CreateFrm mFrm=new CreateFrm();
-	private static FrmHead frmHead = new FrmHead(mFrm);
+	private static FrmHead frmHead = new FrmHead(mFrm,"新建");
 	private static FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("TXT File", "txt");
 	private static FileNameExtensionFilter dbnFilter = new FileNameExtensionFilter("DBN File", "dbn");
 	private static Rectangle frmBound=new Rectangle(DebugNote.getmFrm().getX()+DebugNote.getmFrm().getWidth() / 4,

@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SpringLayout.Constraints;
 
 import main.TextArea;
@@ -41,17 +42,26 @@ public class FrmHead extends JPanel {
 	private double hei;
 
 	public FrmHead(final JFrame call) {
+		init(call);
+	}
+
+	public FrmHead(final JFrame call,String title) {
+		this.title=new JLabel(title);
+		init(call);
+	}
+	
+	public void init(final JFrame call) {
 		this.call = call;
-		//GridBagLayout gridBagLayout = new GridBagLayout();
+		GridBagLayout gridBagLayout = new GridBagLayout();
 		// 从右往左添加控件
 		// this.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-		//this.setLayout(gridBagLayout);
-		this.setLayout(null);
-		//GridBagConstraints c = new GridBagConstraints();
+		this.setLayout(gridBagLayout);
+//		this.setLayout(null);
+		GridBagConstraints c = new GridBagConstraints();
 
 		// 设置按钮样式
 		closeButton.setBackground(Color.GRAY);
-		//closeButton.setPreferredSize(new Dimension(call.getWidth() / 8, 30));
+		closeButton.setPreferredSize(new Dimension(call.getWidth() / 8, 30));
 		saveButton.setBackground(Color.GRAY);
 		//saveButton.setPreferredSize(new Dimension(call.getWidth() / 8, 30));
 		// 设置容器样式
@@ -60,17 +70,18 @@ public class FrmHead extends JPanel {
 		title.setOpaque(true);
 		title.setBackground(Color.RED);
 		title.setBounds(0,0,call.getWidth(),30);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
 
-		//c.weightx = 20;
-		//c.fill = GridBagConstraints.BOTH;
-		//gridBagLayout.setConstraints(title, c);
+		c.weightx = 20;
+		c.fill = GridBagConstraints.BOTH;
+		gridBagLayout.setConstraints(title, c);
 		this.add(title);
 		//c.weightx = 1;
 		//gridBagLayout.setConstraints(saveButton, c);
 		// this.add(saveButton);
-		//c.weightx = 1;
-		//gridBagLayout.setConstraints(closeButton, c);
-		//this.add(closeButton);
+		c.weightx = 1;
+		gridBagLayout.setConstraints(closeButton, c);
+		this.add(closeButton);
 
 		// 添加鼠标拖动事件
 		title.addMouseListener(new MouseAdapter() {
@@ -116,5 +127,5 @@ public class FrmHead extends JPanel {
 
 		call.add(this,BorderLayout.NORTH);
 	}
-
+	
 }
