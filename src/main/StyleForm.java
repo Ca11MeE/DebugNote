@@ -116,7 +116,8 @@ public class StyleForm extends JPanel {
 		Color foreground = StyleConstants.getForeground(style);
 		inputStyle.setForeground(foreground);
 		inputStyle.setFont(new Font("微软雅黑", Font.BOLD, size));
-		inputStyle.setText("字体大小:" + size);
+		inputStyle.setText("输入样式");
+//		inputStyle.setText("字体大小:" + size);
 		inputBuffer.setText(new String(cs));
 
 	}

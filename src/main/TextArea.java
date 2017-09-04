@@ -54,6 +54,24 @@ import utils.poi.DocReader;
 
 public class TextArea {
 
+	//编辑器状态(带样式文档和不带样式文档,默认为不带样式,0 -> 不带样式,1 -> 带样式)
+	private  static  int editState=0;
+	
+	
+	public static int getEditState() {
+		return editState;
+	}
+
+	/**
+	 * 0 -> 不带样式
+	 * 1 -> 带样式
+	 * @param editState		0 -> 不带样式
+	 * 									1 -> 带样式
+	 */
+	public static void setEditState(int editState) {
+		TextArea.editState = editState;
+	}
+
 	private static JTextPane jtp = new JTextPane();
 	private JScrollPane textlist;
 	private DefaultStyledDocument dtext;
@@ -308,6 +326,7 @@ public class TextArea {
 			// 不显示样式面板
 			DebugNote.getSf().setVisible(false);
 
+			setEditState(0);
 			break;
 		case ".dbn":
 			FileInputStream fis = new FileInputStream(file);
@@ -318,6 +337,8 @@ public class TextArea {
 			jtp.setBorder(null);
 			// 显示样式窗口
 			DebugNote.getSf().setVisible(true);
+			
+			setEditState(1);
 			break;
 
 		case ".xml":
@@ -387,6 +408,7 @@ public class TextArea {
 			jtp.setBorder(LineNumberBorder.getMainBar());
 			// 不显示样式窗口
 			DebugNote.getSf().setVisible(false);
+			setEditState(1);
 			break;
 		case ".doc":
 			// doc文件读取
@@ -394,6 +416,7 @@ public class TextArea {
 			for (String string : readDoc) {
 				dtext.insertString(dtext.getLength(), string, null);
 			}
+			setEditState(1);
 			break;
 		default:
 			InputStreamReader defInput = new InputStreamReader(new FileInputStream(file), "utf-8");
@@ -409,6 +432,7 @@ public class TextArea {
 			jtp.setBorder(LineNumberBorder.getMainBar());
 			// 不显示样式窗口
 			DebugNote.getSf().setVisible(false);
+			setEditState(0);
 			break;
 		}
 
