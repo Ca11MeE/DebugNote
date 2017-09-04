@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
@@ -33,6 +34,8 @@ import javax.swing.text.StyleConstants;
 
 import app.DebugNote;
 import frms.FontFrm;
+import main.TextArea;
+import menu.textarea.LineNumberBorder;
 import utils.StyleInitor;
 
 public class FontPane extends JPanel {
@@ -218,7 +221,7 @@ public class FontPane extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JPanel fontInfoPanel = (JPanel) ((JPanel) ((JButton) e.getSource()).getParent()).getParent();
-				//获取属性调整框的属性
+				// 获取属性调整框的属性
 				String family = ((JButton) fontInfoPanel.getComponent(0)).getText().substring(5);
 				int size = ((JSlider) fontInfoPanel.getComponent(2)).getValue();
 				Color foreColor = ((JLabel) ((JPanel) fontInfoPanel.getComponent(3)).getComponent(1)).getBackground(),
@@ -230,9 +233,32 @@ public class FontPane extends JPanel {
 								? Font.ITALIC
 								: Font.PLAIN;
 
-				
-				//根据属性设定字体
-				!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				// 根据属性设定字体
+
+				StyleConstants.setFontSize(txtFont, size);
+				StyleConstants.setFontFamily(txtFont, family);
+				StyleConstants.setForeground(txtFont, foreColor);
+				StyleConstants.setBackground(txtFont, backColor);
+				StyleConstants.setBold(txtFont, bold == Font.BOLD);
+				StyleConstants.setItalic(txtFont, italic == Font.ITALIC);
+
+				fontSizeInit = StyleConstants.getFontSize(txtFont);
+				fontFamilyInit = StyleConstants.getFontFamily(txtFont);
+				foregroundInit = StyleConstants.getForeground(txtFont);
+				backgroundInit = StyleConstants.getBackground(txtFont);
+				boldInit = StyleConstants.isBold(txtFont);
+				italicInit = StyleConstants.isItalic(txtFont);
+
+				// 判断是否是txt编辑状态
+				if (0 == TextArea.getEditState()) {
+					TextArea.getJTP().setParagraphAttributes(txtFont, true);
+					TextArea.getJTP().setCharacterAttributes(txtFont, true);
+					TextArea.getJTP().getStyledDocument().setCharacterAttributes(0, TextArea.getJTP().getStyledDocument().getLength(), txtFont, true);
+					TextArea.getJTP().setBorder(LineNumberBorder.getNewMainBar());
+				} else {
+					JOptionPane.showMessageDialog(DebugNote.getmFrm(), "<html>带样式文档下字体设置不可用<br/>修改样式文档的样式请到<br/>"
+							+ StyleInitor.getStyconfFile().getPath() + "下修改<br/>或右键输入样式打开文件</html>");
+				}
 
 			}
 
@@ -243,16 +269,21 @@ public class FontPane extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JPanel fontInfoPanel = (JPanel) ((JPanel) ((JButton) e.getSource()).getParent()).getParent();
-				//重置属性调整框的属性
+				// 重置属性调整框的属性
 				((JButton) fontInfoPanel.getComponent(0)).setText("当前字体:" + fontFamilyInit);
-				((JSlider) fontInfoPanel.getComponent(2)).setValue(fontSizeInit);;
+				((JSlider) fontInfoPanel.getComponent(2)).setValue(fontSizeInit);
+				;
 				((JLabel) ((JPanel) fontInfoPanel.getComponent(3)).getComponent(1)).setBackground(foregroundInit);
 				((JLabel) ((JPanel) fontInfoPanel.getComponent(4)).getComponent(1)).setBackground(backgroundInit);
 				((JCheckBox) ((JPanel) fontInfoPanel.getComponent(5)).getComponent(0)).setSelected(boldInit);
 				((JCheckBox) ((JPanel) fontInfoPanel.getComponent(5)).getComponent(1)).setSelected(italicInit);
-				
-				//重置预览域字体属性
-				fontViewLbl.setFont(DebugNote.getText().getJTP().getFont());
+
+				// 重置预览域字体属性
+				fontViewLbl.setFont(new Font(fontFamilyInit,
+						(boldInit == true ? Font.BOLD : Font.PLAIN) + (italicInit == true ? Font.ITALIC : Font.PLAIN),
+						fontSizeInit));
+				fontViewLbl.setBackground(backgroundInit);
+				fontViewLbl.setForeground(foregroundInit);
 			}
 
 		});
@@ -271,6 +302,10 @@ public class FontPane extends JPanel {
 		((JButton) ((JPanel) this.getComponent(0)).getComponent(0)).setText("当前字体:" + family);
 		JLabel fVL = (JLabel) ((JPanel) this.fontInfo.getComponent(6)).getComponent(0);
 		fVL.setFont(new Font(family, fVL.getFont().getStyle(), fVL.getFont().getSize()));
+	}
+	
+	public static Font getSetedFont() {
+		return fontViewLbl.getFont();
 	}
 
 }

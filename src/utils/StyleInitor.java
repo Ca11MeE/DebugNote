@@ -64,6 +64,7 @@ public class StyleInitor {
 		StyleConstants.setForeground(defaultAttr, Color.BLACK);
 		StyleConstants.setBackground(defaultAttr, Color.WHITE);
 		StyleConstants.setBold(defaultAttr, false);
+		StyleConstants.setItalic(defaultAttr, false);
 	}
 
 	public static Map<String,SimpleAttributeSet> getInitStyleList() {

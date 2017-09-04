@@ -17,6 +17,7 @@ import javax.swing.text.StyleConstants;
 import app.DebugNote;
 import main.StyleForm;
 import main.TextArea;
+import main.left.FontPane;
 import utils.StyleInitor;
 
 public class LineNumberBorder extends LineBorder {
@@ -30,9 +31,11 @@ public class LineNumberBorder extends LineBorder {
 
 	static {
 		int fontSize = StyleConstants.getFontSize(StyleInitor.getDefaultAttr());
-		initFont=new Font("微软雅黑", Font.PLAIN, fontSize);
+		initFont=FontPane.getSetedFont();
 		System.out.println(fontSize);
 	}
+	
+	
 	
 	private LineNumberBorder(Color color) {
 		super(color);
@@ -41,6 +44,11 @@ public class LineNumberBorder extends LineBorder {
 	public static LineNumberBorder getMainBar() {
 
 		return mainBar;
+	}
+	
+	public static LineNumberBorder getNewMainBar() {
+		initFont=FontPane.getSetedFont();
+		return new LineNumberBorder(Color.gray);
 	}
 
 	/*

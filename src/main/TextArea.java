@@ -198,14 +198,18 @@ public class TextArea {
 				 * 
 				 * }
 				 */
-
-				StyleForm.showBuffer(inCBuffer, null);
+				if (0!=getEditState()) {
+					
+					StyleForm.showBuffer(inCBuffer, null);
+				}
 				// 设定文本样式
 				if (inMarkEnd) {
 					
 				}
-				
-				jtp.setCharacterAttributes(selectAttr, true);
+				if (0!=getEditState()) {
+					
+					jtp.setCharacterAttributes(selectAttr, true);
+				}
 			}
 
 		});
